@@ -176,17 +176,19 @@ function renderDashboardNav() {
 // ====== Dashboard data loading ======
 async function loadDashboardData() {
   try {
-    const [userData, topicsData, briefsData, subData] = await Promise.all([
+    const [userData, topicsData, briefsData, subData, settingsData] = await Promise.all([
       api('/me'),
       api('/topics'),
       api('/briefs?limit=200'),
-      api('/subscription')
+      api('/subscription'),
+      api('/settings')
     ]);
     state.user = userData.user;
     state.topics = topicsData.topics;
     state.briefs = briefsData.briefs;
     state.subscription = subData.subscription;
     state.payments = subData.payments;
+    state.slack_webhook_url = settingsData?.slack_webhook_url || '';
     render();
   } catch (err) {
     if (err.message.includes('401') || err.message.includes('Unauthorized')) {
@@ -208,33 +210,57 @@ function renderHome() {
       </div>
     </nav>
     <section class="hero">
-      <h1>Din marknadsbevakning<br><span>automatiserad</span></h1>
-      <p>Få korta, relevanta briefs om din bransch direkt i din inkorg. AI-genererade sammanfattningar av nyheter, trender och konkurrenter.</p>
+      <h1>Konkurrentbevakning<br><span>automatiserad med AI</span></h1>
+      <p>Få dagliga briefs om dina konkurrenter, branschtrender och marknadsförändringar. AI-driven analys med aktuell data — direkt i din inkorg eller Slack.</p>
       <div class="hero-actions">
-        <a href="#signup" class="btn btn-primary">✉️ Kom igång</a>
+        <a href="#signup" class="btn btn-primary">🚀 Kom igång gratis</a>
         <a href="#features" class="btn btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Läs mer</a>
       </div>
     </section>
     <div class="features-grid" id="features">
-      <div class="feature-card"><div class="feature-icon">📡</div><h3>Bevaka vad du vill</h3><p>Nyheter, bloggar, RSS — definiera dina ämnen och källor.</p></div>
-      <div class="feature-card"><div class="feature-icon">🧠</div><h3>AI-sammanfattningar</h3><p>Varje brief är en koncis sammanfattning — bara det viktigaste.</p></div>
-      <div class="feature-card"><div class="feature-icon">📬</div><h3>Levereras till inkorgen</h3><p>Dagligen eller veckovis — ett mejl med allt du behöver veta.</p></div>
-      <div class="feature-card"><div class="feature-icon">⚡</div><h3>Snabbt att komma igång</h3><p>Ange dina ämnen. Första briefen inom 24h.</p></div>
-      <div class="feature-card"><div class="feature-icon">💳</div><h3>Betala med kort eller Swish</h3><p>Trygg betalning via Stripe. 99 kr/mån — säg upp när du vill.</p></div>
-      <div class="feature-card"><div class="feature-icon">🎯</div><h3>Skär bort bruset</h3><p>AI:n filtrerar bort irrelevant innehåll och prioriterar det viktiga.</p></div>
+      <div class="feature-card"><div class="feature-icon">🔍</div><h3>Konkurrentanalys</h3><p>Automatisk bevakning av konkurrenters aktiviteter, lanseringar, priser och strategier.</p></div>
+      <div class="feature-card"><div class="feature-icon">🧠</div><h3>AI med webbsökning</h3><p>Google Search i varje brief — aktuell data, inte gammal träningsdata.</p></div>
+      <div class="feature-card"><div class="feature-icon">📬</div><h3>Slack + Mail</h3><p>Levereras var du jobbar. Slack, e-post eller dashboard — du väljer.</p></div>
+      <div class="feature-card"><div class="feature-icon">⚡</div><h3>På 30 sekunder</h3><p>Ange ett ämne. Få din första brief direkt. Inga inställningar eller integrationer.</p></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><h3>Dela med teamet</h3><p>Generera en publik länk och dela briefs med kollegor, kunder eller partners.</p></div>
+      <div class="feature-card"><div class="feature-icon">💰</div><h3>Från 99 kr/mån</h3><p>Betala med kort via Stripe. 14 dagars gratis provperiod — säg upp när du vill.</p></div>
     </div>
     <section class="pricing-section">
       <div class="pricing-card">
-        <h2>BriefBot</h2>
+        <h2>BriefBot Pro</h2>
         <div class="price">99 kr <span>/mån</span></div>
         <ul>
-          <li>Upp till 5 bevakningsämnen</li>
-          <li>AI-briefs på svenska</li>
-          <li>Mail och dashboard</li>
-          <li>Ändra ämnen när som helst</li>
-          <li>Säg upp när du vill</li>
+          <li>5 bevakningsämnen</li>
+          <li>Konkurrentanalys med Google Search</li>
+          <li>Dagliga briefs via mail</li>
+          <li>Dela briefs via länk</li>
+          <li>14 dagar gratis</li>
         </ul>
-        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center">✉️ Kom igång idag</a>
+        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center">🚀 Kom igång gratis</a>
+      </div>
+      <div class="pricing-card pricing-featured">
+        <h2>BriefBot Team</h2>
+        <div class="price">299 kr <span>/mån</span></div>
+        <ul>
+          <li>20 bevakningsämnen</li>
+          <li>Slack-integration</li>
+          <li>Dela med hela teamet</li>
+          <li>Konkurrentannons-rapport</li>
+          <li>Prioriterad support</li>
+        </ul>
+        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center">🚀 Kom igång</a>
+      </div>
+      <div class="pricing-card">
+        <h2>BriefBot Agency</h2>
+        <div class="price">999 kr <span>/mån</span></div>
+        <ul>
+          <li>Obegränsat ämnen</li>
+          <li>Vit-märkning</li>
+          <li>API-tillgång</li>
+          <li>Export till PDF/PPT</li>
+          <li>Prioriterad support</li>
+        </ul>
+        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center">Kontakta oss</a>
       </div>
     </section>
     <div class="footer"><p>© 2026 BriefBot.se — Drivs av AI. Byggt för dig.</p></div>
@@ -559,6 +585,20 @@ async function deleteBrief(briefId) {
   }
 }
 
+async function shareBrief(briefId) {
+  try {
+    const data = await api(`/briefs/${briefId}/share`, { method: 'POST' });
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(data.shareUrl);
+      alert('Länk kopierad till urklipp!');
+    } else {
+      prompt('Dela denna länk:', data.shareUrl);
+    }
+  } catch (err) {
+    alert('Fel: ' + err.message);
+  }
+}
+
 async function showBrief(briefId) {
   try {
     const data = await api(`/briefs/${briefId}`);
@@ -575,6 +615,7 @@ async function showBrief(briefId) {
             <h2 style="margin-bottom:0.25rem">${esc(b.topic_name)}</h2>
             <div style="color:var(--text-muted);font-size:0.85rem">${b.created_at?.replace('T', ' ').slice(0,16) || ''}</div>
           </div>
+          <button class="btn btn-outline btn-sm" onclick="shareBrief(${b.id})" style="margin-right:0.5rem">🔗 Dela</button>
           <button class="btn btn-outline btn-sm" onclick="this.closest('.modal-overlay').remove()">Stäng</button>
         </div>
         <div style="font-size:0.9rem;color:var(--text);white-space:pre-wrap;line-height:1.7">${esc(b.content || '')}</div>
@@ -758,6 +799,16 @@ function renderProfile() {
           <button type="submit" class="btn btn-primary">Spara</button>
         </form>
       </div>
+
+      <div class="card" style="margin-top:1.5rem">
+        <h3 style="color:#fff;font-size:1rem;margin:0 0 0.5rem">🔔 Slack-integration</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem">Få briefs automatiskt i Slack. Skapa en webhook i Slack (Slack App > Incoming Webhooks) och klistra in URL:en här.</p>
+        <div class="form-group">
+          <label>Slack Webhook URL</label>
+          <input type="url" id="slack-webhook" class="form-input" value="${esc(state.slack_webhook_url || '')}" placeholder="https://hooks.slack.com/services/...">
+        </div>
+        <button class="btn btn-primary" onclick="saveSlackSettings()">Spara Slack-koppling</button>
+      </div>
     </div>
   `;
 }
@@ -773,6 +824,17 @@ async function updateProfile(e) {
     });
     alert('Profil uppdaterad!');
     await loadDashboardData();
+  } catch (err) {
+    alert('Fel: ' + err.message);
+  }
+}
+
+async function saveSlackSettings() {
+  const url = document.getElementById('slack-webhook')?.value || '';
+  try {
+    await api('/settings', { method: 'PUT', body: JSON.stringify({ slack_webhook_url: url }) });
+    state.slack_webhook_url = url;
+    alert('Slack-koppling sparad! Briefs levereras nu automatiskt till Slack när du genererar.');
   } catch (err) {
     alert('Fel: ' + err.message);
   }
