@@ -491,13 +491,57 @@ async function generateBriefs() {
   const btn = document.querySelector('#page-briefs .btn-primary');
   if (btn) { btn.disabled = true; btn.textContent = 'Genererar...'; }
   try {
-    const data = await api('/briefs/generate', { method: 'POST' });
-    alert(`${data.count} briefs genererade!`);
+    // Om flera ämnen — visa väljare
+    if (state.topics.length > 1) {
+      const selected = await showTopicPicker();
+      if (!selected || selected.length === 0) {
+        if (btn) { btn.disabled = false; btn.textContent = 'Generera nu'; }
+        return;
+      }
+      const data = await api('/briefs/generate', { method: 'POST', body: JSON.stringify({ topic_ids: selected }) });
+      alert(`${data.count} briefs genererade!`);
+    } else {
+      const data = await api('/briefs/generate', { method: 'POST' });
+      alert(`${data.count} briefs genererade!`);
+    }
     await loadDashboardData();
   } catch (err) {
     alert('Fel: ' + err.message);
   }
   if (btn) { btn.disabled = false; btn.textContent = 'Generera nu'; }
+}
+
+function showTopicPicker() {
+  return new Promise((resolve) => {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay._resolve = resolve;
+    const topicCards = state.topics.filter(t => t.active).map(t => `
+      <label class="topic-pick-item" style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:0.5rem;transition:all 0.15s">
+        <input type="checkbox" class="topic-pick-cb" value="${t.id}" checked>
+        <span style="font-weight:500;flex:1">${esc(t.name)}</span>
+        <span style="color:var(--text-muted);font-size:0.85rem">${t.keywords ? esc(t.keywords) : ''}</span>
+      </label>
+    `).join('');
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:450px">
+        <h2 style="margin-top:0">Välj ämnen</h2>
+        <p style="color:var(--text-muted);margin-bottom:1rem">Vilka ämnen vill du generera briefs för?</p>
+        <div style="margin-bottom:1.5rem">${topicCards}</div>
+        <div style="display:flex;gap:1rem;justify-content:flex-end">
+          <button class="btn btn-outline" id="tp-cancel">Avbryt</button>
+          <button class="btn btn-primary" id="tp-confirm">Generera</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    document.getElementById('tp-cancel').onclick = () => { overlay._resolve([]); overlay.remove(); };
+    document.getElementById('tp-confirm').onclick = () => {
+      const cbs = overlay.querySelectorAll('.topic-pick-cb:checked');
+      overlay._resolve(Array.from(cbs).map(c => parseInt(c.value)));
+      overlay.remove();
+    };
+  });
 }
 
 let _briefDetail = null;
