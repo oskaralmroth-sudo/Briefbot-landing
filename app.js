@@ -179,7 +179,7 @@ async function loadDashboardData() {
     const [userData, topicsData, briefsData, subData] = await Promise.all([
       api('/me'),
       api('/topics'),
-      api('/briefs?limit=5'),
+      api('/briefs?limit=200'),
       api('/subscription')
     ]);
     state.user = userData.user;
@@ -473,15 +473,18 @@ function renderBriefs() {
   const list = document.getElementById('brief-list');
   if (list && state.briefs.length > 0) {
     list.innerHTML = state.briefs.map(b => `
-      <div class="brief-card" onclick="showBrief(${b.id})">
-        <div class="brief-header">
-          <div>
-            <div class="brief-title">${esc(b.topic_name)}</div>
-            <div class="brief-topic">${b.title || ''}</div>
+      <div class="brief-card" style="position:relative">
+        <div onclick="showBrief(${b.id})" style="cursor:pointer">
+          <div class="brief-header">
+            <div>
+              <div class="brief-title">${esc(b.topic_name)}</div>
+              <div class="brief-topic">${b.title || ''}</div>
+            </div>
+            <div class="brief-date">${b.created_at?.replace('T', ' ').slice(0,16) || ''}</div>
           </div>
-          <div class="brief-date">${b.created_at?.replace('T', ' ').slice(0,16) || ''}</div>
+          <div class="brief-summary">${esc(b.summary || b.content?.slice(0,500) || '')}</div>
         </div>
-        <div class="brief-summary">${esc(b.summary || b.content?.slice(0,200) || '')}</div>
+        <button class="btn btn-outline btn-sm" onclick="deleteBrief(${b.id})" style="position:absolute;top:0.75rem;right:0.75rem;padding:0.25rem 0.6rem;font-size:0.8rem;color:var(--danger);border-color:var(--danger)">Radera</button>
       </div>
     `).join('');
   }
@@ -545,6 +548,17 @@ function showTopicPicker() {
 }
 
 let _briefDetail = null;
+async function deleteBrief(briefId) {
+  if (!confirm('Radera denna brief?')) return;
+  try {
+    await api('/briefs/' + briefId, { method: 'DELETE' });
+    state.briefs = state.briefs.filter(b => b.id !== briefId);
+    render();
+  } catch (err) {
+    alert('Fel: ' + err.message);
+  }
+}
+
 async function showBrief(briefId) {
   try {
     const data = await api(`/briefs/${briefId}`);
