@@ -372,7 +372,10 @@ function showTopicForm(topic) {
       <form onsubmit="saveTopic(event, ${topic?.id || 'null'})">
         <div class="form-group">
           <label>Namn på ämnet *</label>
-          <input type="text" id="topic-name" class="form-input" value="${esc(topic?.name || '')}" placeholder="t.ex. Svensk dagligvaruhandel" required>
+          <div style="display:flex;gap:0.5rem">
+            <input type="text" id="topic-name" class="form-input" value="${esc(topic?.name || '')}" placeholder="t.ex. Svensk dagligvaruhandel" required oninput="document.getElementById('suggest-btn').style.display=this.value.trim()?'inline-flex':'none'">
+            <button type="button" id="suggest-btn" class="btn btn-outline btn-sm" onclick="suggestKeywords()" style="${topic?.name ? 'display:inline-flex' : 'display:none'}" title="Få AI-förslag">🤖 Förslag</button>
+          </div>
         </div>
         <div class="form-group">
           <label>Nyckelord (kommaseparerade)</label>
@@ -397,6 +400,25 @@ function showTopicForm(topic) {
     </div>
   `;
   document.body.appendChild(overlay);
+}
+
+async function suggestKeywords() {
+  const name = document.getElementById('topic-name')?.value;
+  if (!name || !name.trim()) return;
+  const btn = document.getElementById('suggest-btn');
+  btn.disabled = true; btn.textContent = '🤔 Tänker...';
+  try {
+    const data = await api('/topics/suggest', {
+      method: 'POST', body: JSON.stringify({ name: name.trim() })
+    });
+    if (data.keywords) document.getElementById('topic-keywords').value = data.keywords;
+    if (data.sources) document.getElementById('topic-sources').value = data.sources;
+    btn.textContent = '✅ Förslag klara';
+    setTimeout(() => { btn.textContent = '🤖 Förslag'; btn.disabled = false; }, 2000);
+  } catch (err) {
+    btn.textContent = '❌ Misslyckades';
+    setTimeout(() => { btn.textContent = '🤖 Förslag'; btn.disabled = false; }, 2000);
+  }
 }
 
 async function saveTopic(e, topicId) {
