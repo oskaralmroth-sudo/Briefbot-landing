@@ -1,8 +1,7 @@
-// BriefBot — Complete Application Logic
+// BriefBot — Complete Application Logic (Stripe Payments)
 
 // ====== Konfiguration ======
-const API_URL = window.location.origin + '/api';  // Workers proxied through Pages
-// För lokal utveckling: API_URL = 'https://briefbot.se.workers.dev'
+const API_URL = window.location.origin + '/api';
 
 // ====== State ======
 let state = {
@@ -28,7 +27,22 @@ async function api(path, options = {}) {
 
 // ====== Router ======
 function getPage() {
-  return window.location.hash.slice(1) || 'home';
+  const hash = window.location.hash.slice(1);
+  // Handle hash with query params: #payment?session_id=xxx
+  if (hash.includes('?')) return hash.split('?')[0];
+  return hash || 'home';
+}
+
+function getHashParams() {
+  const hash = window.location.hash.slice(1);
+  if (!hash.includes('?')) return {};
+  const qs = hash.split('?')[1];
+  const params = {};
+  qs.split('&').forEach(p => {
+    const [k, v] = p.split('=');
+    params[decodeURIComponent(k)] = decodeURIComponent(v);
+  });
+  return params;
 }
 
 function navigate(page) {
@@ -36,7 +50,16 @@ function navigate(page) {
   render();
 }
 
-window.addEventListener('hashchange', render);
+window.addEventListener('hashchange', () => {
+  const hashParams = getHashParams();
+  // If returning from Stripe Checkout with session_id
+  if (getPage() === 'payment' && hashParams.session_id) {
+    render();
+    handlePaymentReturn(hashParams.session_id);
+  } else {
+    render();
+  }
+});
 
 // ====== Rendering ======
 function render() {
@@ -53,7 +76,7 @@ function render() {
       case 'briefs': renderBriefs(); break;
       case 'pricing': renderPricing(); break;
       case 'profile': renderProfile(); break;
-      case 'payment': renderPayment(); break;
+      case 'payment': renderPaymentRedirect(); break;
       default: navigate('dashboard'); return;
     }
     const el = document.getElementById('page-' + page);
@@ -181,115 +204,40 @@ function renderHome() {
       <div class="nav-links">
         <a href="#home">Hem</a>
         <a href="#login">Logga in</a>
-        <a href="#signup" class="btn btn-primary btn-sm">✉️ Kom igång</a>
+        <a href="#signup" class="btn btn-primary btn-sm">Kom igång</a>
       </div>
     </nav>
-
-    <!-- HERO -->
-    <section class="hero" style="padding:5rem 1.5rem 3rem">
-      <div style="background:rgba(59,130,246,0.1);display:inline-block;padding:0.3rem 0.8rem;border-radius:999px;font-size:0.8rem;color:var(--primary);margin-bottom:1.5rem;border:1px solid rgba(59,130,246,0.2)">
-        ✨ AI-driven marknadsbevakning för svenska företag
-      </div>
-      <h1>Lägg 2 minuter om dagen<br>istället för 2 timmar <span>på bevakning</span></h1>
-      <p style="font-size:1.15rem;max-width:600px">BriefBot scannar nyheter, bloggar och branschkällor dygnet runt. Du får en kort, AI-sammanfattad brief varje morgon — direkt i din inkorg.</p>
+    <section class="hero">
+      <h1>Din marknadsbevakning<br><span>automatiserad</span></h1>
+      <p>Få korta, relevanta briefs om din bransch direkt i din inkorg. AI-genererade sammanfattningar av nyheter, trender och konkurrenter.</p>
       <div class="hero-actions">
-        <a href="#signup" class="btn btn-primary" style="font-size:1rem;padding:1rem 2.5rem">✉️ Starta din bevakning — 99 kr/mån</a>
-        <a href="#features" class="btn btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Se hur det funkar</a>
+        <a href="#signup" class="btn btn-primary">✉️ Kom igång</a>
+        <a href="#features" class="btn btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Läs mer</a>
       </div>
     </section>
-
-    <!-- SOCIAL PROOF -->
-    <div style="max-width:600px;margin:-1rem auto 3rem;text-align:center">
-      <p style="color:var(--text-dim);font-size:0.85rem">✉️ Levereras varje vardag · 🇸🇪 Svenska källor · 🔒 Din data är privat</p>
-    </div>
-
-    <!-- HOW IT WORKS -->
-    <div style="max-width:1000px;margin:0 auto;padding:3rem 1.5rem">
-      <h2 style="text-align:center;font-size:1.8rem;color:#fff;margin-bottom:3rem">Så här fungerar det</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center">
-        <div>
-          <div style="width:48px;height:48px;background:var(--primary);border-radius:50%;line-height:48px;font-weight:700;font-size:1.2rem;margin:0 auto 1rem;color:#fff">1</div>
-          <h3 style="color:#fff;margin-bottom:0.5rem">Ange dina ämnen</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem">Berätta vad du vill bevaka — bransch, konkurrenter eller specifika nyckelord. Klart på 2 minuter.</p>
-        </div>
-        <div>
-          <div style="width:48px;height:48px;background:var(--primary);border-radius:50%;line-height:48px;font-weight:700;font-size:1.2rem;margin:0 auto 1rem;color:#fff">2</div>
-          <h3 style="color:#fff;margin-bottom:0.5rem">AI bevakar dygnet runt</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem">Vår AI (xAI Grok) scannar nyheter och källor efter det som är relevant för just dig.</p>
-        </div>
-        <div>
-          <div style="width:48px;height:48px;background:var(--primary);border-radius:50%;line-height:48px;font-weight:700;font-size:1.2rem;margin:0 auto 1rem;color:#fff">3</div>
-          <h3 style="color:#fff;margin-bottom:0.5rem">Få briefen varje morgon</h3>
-          <p style="color:var(--text-muted);font-size:0.9rem">Kl 06:00 varje vardag. Läs på 2 minuter och var uppdaterad. Inget flöde att scrolla.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- FEATURES -->
     <div class="features-grid" id="features">
-      <div class="feature-card"><div class="feature-icon">⏱️</div><h3>Spara 10 timmar i veckan</h3><p>Sluta scrolla nyhetssajter. BriefBot gör jobbet åt dig — sammanfattat och klart.</p></div>
-      <div class="feature-card"><div class="feature-icon">🎯</div><h3>Skräddarsytt för dig</h3><p>Du väljer ämnen, nyckelord och källor. Bara det relevanta — inget brus.</p></div>
-      <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI från xAI Grok</h3><p>Briefs skrivs på svenska av världsklass AI. Lättläst, koncist, korrekt.</p></div>
-      <div class="feature-card"><div class="feature-icon">📬</div><h3>Kommer till din inkorg</h3><p>Ingen app att ladda ner. Mejl varje morgon — öppna, läs, klart.</p></div>
-      <div class="feature-card"><div class="feature-icon">📱</div><h3>Betala med Swish</h3><p>99 kr/mån. Inget bindningstid. Säg upp när du vill — inget krångel.</p></div>
-      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Svensk integritet</h3><p>Dina uppgifter lagras inom EU. Ingen datadelning med tredje part.</p></div>
+      <div class="feature-card"><div class="feature-icon">📡</div><h3>Bevaka vad du vill</h3><p>Nyheter, bloggar, RSS — definiera dina ämnen och källor.</p></div>
+      <div class="feature-card"><div class="feature-icon">🧠</div><h3>AI-sammanfattningar</h3><p>Varje brief är en koncis sammanfattning — bara det viktigaste.</p></div>
+      <div class="feature-card"><div class="feature-icon">📬</div><h3>Levereras till inkorgen</h3><p>Dagligen eller veckovis — ett mejl med allt du behöver veta.</p></div>
+      <div class="feature-card"><div class="feature-icon">⚡</div><h3>Snabbt att komma igång</h3><p>Ange dina ämnen. Första briefen inom 24h.</p></div>
+      <div class="feature-card"><div class="feature-icon">💳</div><h3>Betala med kort eller Swish</h3><p>Trygg betalning via Stripe. 99 kr/mån — säg upp när du vill.</p></div>
+      <div class="feature-card"><div class="feature-icon">🎯</div><h3>Skär bort bruset</h3><p>AI:n filtrerar bort irrelevant innehåll och prioriterar det viktiga.</p></div>
     </div>
-
-    <!-- WHO IS IT FOR -->
-    <div style="max-width:1000px;margin:0 auto;padding:4rem 1.5rem">
-      <h2 style="text-align:center;font-size:1.8rem;color:#fff;margin-bottom:2.5rem">För dig som...</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
-        <div class="card card-hover"><div style="font-size:2rem;margin-bottom:0.5rem">🏢</div><h3 style="color:#fff;font-size:1rem;margin-bottom:0.25rem">Äger eller leder ett företag</h3><p style="color:var(--text-muted);font-size:0.85rem">Håll koll på konkurrenter, branschnyheter och trender utan att lägga timmar om dagen.</p></div>
-        <div class="card card-hover"><div style="font-size:2rem;margin-bottom:0.5rem">📈</div><h3 style="color:#fff;font-size:1rem;margin-bottom:0.25rem">Jobbar med försäljning eller marknad</h3><p style="color:var(--text-muted);font-size:0.85rem">Var först med att veta vad som händer i din bransch. Dina kunder märker skillnaden.</p></div>
-        <div class="card card-hover"><div style="font-size:2rem;margin-bottom:0.5rem">💼</div><h3 style="color:#fff;font-size:1rem;margin-bottom:0.25rem">Är konsult eller rådgivare</h3><p style="color:var(--text-muted);font-size:0.85rem">Imponera på dina kunder med aktuell branschkunskap — utan att lägga tid på research.</p></div>
-      </div>
-    </div>
-
-    <!-- PRICING -->
     <section class="pricing-section">
-      <div class="pricing-card" style="position:relative">
-        <div style="background:var(--primary);color:#fff;position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:0.25rem 1.5rem;border-radius:999px;font-size:0.8rem;font-weight:600">MEST POPULÄR</div>
-        <h2>BriefBot Pro</h2>
+      <div class="pricing-card">
+        <h2>BriefBot</h2>
         <div class="price">99 kr <span>/mån</span></div>
-        <p style="color:var(--text-muted);margin-bottom:1.5rem;font-size:0.9rem">Ingen bindningstid. Säg upp när du vill.</p>
         <ul>
           <li>Upp till 5 bevakningsämnen</li>
-          <li>AI-briefs på svenska varje vardag</li>
-          <li>Levereras direkt till din inkorg</li>
-          <li>Dashboard med historik</li>
+          <li>AI-briefs på svenska</li>
+          <li>Mail och dashboard</li>
           <li>Ändra ämnen när som helst</li>
-          <li>Swish-betalning</li>
+          <li>Säg upp när du vill</li>
         </ul>
-        <a href="#signup" class="btn btn-primary" style="margin-top:1.5rem;width:100%;justify-content:center;font-size:1rem;padding:1rem">✉️ Starta din kostnadsfria testperiod</a>
-        <p style="color:var(--text-dim);font-size:0.8rem;margin-top:0.75rem">99 kr/mån. Första dragningen efter 7 dagar.</p>
+        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center">✉️ Kom igång idag</a>
       </div>
     </section>
-
-    <!-- FAQ -->
-    <div style="max-width:600px;margin:0 auto;padding:3rem 1.5rem">
-      <h2 style="text-align:center;font-size:1.5rem;color:#fff;margin-bottom:2rem">Vanliga frågor</h2>
-      <div class="card" style="margin-bottom:0.75rem">
-        <h3 style="color:#fff;font-size:0.95rem;margin-bottom:0.25rem">Vilka källor bevakar BriefBot?</h3>
-        <p style="color:var(--text-muted);font-size:0.85rem">Du väljer själva. Vanliga exempel: DI.se, SvD, Breakit, Dagens Handel, Byggnyheter, och allmänna RSS-flöden. AI:n kan även hitta relevanta nyheter utan specifika källor.</p>
-      </div>
-      <div class="card" style="margin-bottom:0.75rem">
-        <h3 style="color:#fff;font-size:0.95rem;margin-bottom:0.25rem">Kan jag ändra mina ämnen?</h3>
-        <p style="color:var(--text-muted);font-size:0.85rem">Ja, när som helst från din dashboard. Ändringar träder i kraft till nästa brief.</p>
-      </div>
-      <div class="card" style="margin-bottom:0.75rem">
-        <h3 style="color:#fff;font-size:0.95rem;margin-bottom:0.25rem">Hur avslutar jag?</h3>
-        <p style="color:var(--text-muted);font-size:0.85rem">Ett klick i dashboarden. Ingen bindningstid, inget krångel. Du får ingen ytterligare faktura.</p>
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div style="text-align:center;padding:4rem 2rem;background:radial-gradient(ellipse 50% 50% at 50% 100%, rgba(59,130,246,0.08), transparent)">
-      <h2 style="color:#fff;font-size:2rem;margin-bottom:1rem">Redo att spara tid?</h2>
-      <p style="color:var(--text-muted);max-width:450px;margin:0 auto 2rem;font-size:1.05rem">Börja idag. Första briefen inom 24h. 99 kr/mån — säg upp när du vill.</p>
-      <a href="#signup" class="btn btn-primary" style="font-size:1.1rem;padding:1rem 3rem">✉️ Starta din bevakning</a>
-    </div>
-
-    <div class="footer"><p>© 2026 BriefBot.se — Drivs av xAI Grok. Byggt för svenska företag.</p></div>
+    <div class="footer"><p>© 2026 BriefBot.se — Drivs av AI. Byggt för dig.</p></div>
   `;
 }
 
@@ -318,9 +266,9 @@ function renderSignup() {
       <form onsubmit="handleSignup(event)">
         <div class="form-group"><label>Namn</label><input type="text" id="signup-name" class="form-input" placeholder="Ditt namn"></div>
         <div class="form-group"><label>E-post</label><input type="email" id="signup-email" class="form-input" placeholder="din@epost.se" required></div>
-        <div class="form-group"><label>Telefon (för Swish)</label><input type="tel" id="signup-phone" class="form-input" placeholder="0701234567"></div>
+        <div class="form-group"><label>Telefon (frivilligt)</label><input type="tel" id="signup-phone" class="form-input" placeholder="0701234567"></div>
         <div class="form-group"><label>Lösenord</label><input type="password" id="signup-password" class="form-input" placeholder="Minst 6 tecken" required minlength="6"></div>
-        <button type="submit" class="btn btn-primary">Skapa konto</button>
+        <button type="submit" class="btn btn-primary">Skapa konto — prova gratis i 14 dagar</button>
       </form>
       <div class="auth-link">Har du redan ett konto? <a href="#login">Logga in</a></div>
       <div class="auth-link"><a href="#home">← Tillbaka</a></div>
@@ -348,6 +296,13 @@ function renderDashboard() {
       <div class="card"><div style="font-size:2rem;font-weight:700;color:#fff">${briefCount}</div><div style="color:var(--text-muted);font-size:0.875rem">Briefs skapade</div></div>
       <div class="card"><div style="font-size:1rem;font-weight:600;color:#fff">${subStatus}</div><div style="color:var(--text-muted);font-size:0.875rem">Prenumeration</div></div>
     </div>
+
+    ${sub.status !== 'active' ? `
+      <div class="card" style="border-color:var(--primary);margin-bottom:2rem;text-align:center">
+        <p style="color:var(--text-muted);margin-bottom:1rem">Aktivera din prenumeration för att få dagliga briefs</p>
+        <a href="#pricing" class="btn btn-primary">Betala 99 kr/mån →</a>
+      </div>
+    ` : ''}
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
       <div>
@@ -551,7 +506,7 @@ async function showBrief(briefId) {
   }
 }
 
-// ====== Pricing & Payment ======
+// ====== Pricing & Payment (Stripe) ======
 function renderPricing() {
   const sub = state.subscription || {};
   const isActive = sub.status === 'active';
@@ -595,82 +550,101 @@ function renderPricing() {
             <li>Ändra ämnen när som helst</li>
             <li>Säg upp när du vill</li>
           </ul>
-          <button class="btn btn-primary" onclick="startPayment()" style="margin-top:1rem;width:100%;justify-content:center">
-            Betala med Swish
+          <button class="btn btn-primary" onclick="startStripeCheckout()" style="margin-top:1rem;width:100%;justify-content:center" id="checkout-btn">
+            💳 Betala med kort/Swish
           </button>
+          <p style="color:var(--text-dim);font-size:0.75rem;margin-top:0.75rem">
+            Betalningen hanteras av Stripe. Kort, Swish & Apple Pay.
+          </p>
         </div>
       </div>
     `}
   `;
 }
 
-async function startPayment() {
+async function startStripeCheckout() {
+  const btn = document.getElementById('checkout-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Skickar till Stripe...'; }
+
   try {
-    const data = await api('/swish/pay', {
+    const data = await api('/stripe/create-checkout', {
       method: 'POST', body: JSON.stringify({ plan: 'monthly' })
     });
-    navigate('payment');
-    renderPayment(data.payment);
-  } catch (err) {
-    // If phone missing, show profile update
-    if (err.message.includes('Telefonnummer')) {
-      if (confirm('Du måste ange ett telefonnummer för Swish-betalning. Gå till profil?')) {
-        navigate('profile');
-      }
-    } else {
-      alert('Fel: ' + err.message);
+
+    if (data.alreadyActive) {
+      alert('Din prenumeration är redan aktiv!');
+      await loadDashboardData();
+      return;
     }
+
+    if (data.url) {
+      // Redirect to Stripe Checkout
+      window.location.href = data.url;
+    } else {
+      alert('Kunde inte skapa betalningslänk. Försök igen.');
+    }
+  } catch (err) {
+    alert('Fel: ' + err.message);
+    if (btn) { btn.disabled = false; btn.textContent = '💳 Betala med kort/Swish'; }
   }
 }
 
-function renderPayment(payment) {
+function renderPaymentRedirect() {
+  // This page is shown briefly after Stripe redirects back
+  const hashParams = getHashParams();
+  const sessionId = hashParams.session_id;
+
   document.getElementById('page-payment').innerHTML = `
-    <h1>Betala med Swish</h1>
-    <p class="subtitle">Slutför din betalning för BriefBot</p>
-
-    <div class="card" style="max-width:500px;margin:0 auto;text-align:center">
-      <div style="font-size:1.25rem;font-weight:600;color:#fff;margin-bottom:0.5rem">BriefBot — 99 kr</div>
-      <div style="color:var(--text-muted);margin-bottom:2rem">Månadsvis prenumeration</div>
-
-      <div style="background:var(--bg);padding:2rem;border-radius:var(--radius);margin-bottom:1.5rem">
-        <div style="font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem">99 kr</div>
-        <div style="color:var(--text-muted)">Skicka till <strong style="color:#fff">1234 567 890</strong> (Swish-nummer)</div>
-      </div>
-
-      <div class="swish-steps">
-        <p style="color:#fff;font-weight:600;margin-bottom:0.75rem">Så här betalar du:</p>
-        <ol style="text-align:left">
-          <li>Öppna Swish-appen</li>
-          <li>Skicka 99 kr till <strong>123 456 78 90</strong></li>
-          <li>Ange meddelande: <strong>BB-${payment?.id || Date.now()}</strong></li>
-          <li>Betalningen hanteras automatiskt</li>
-        </ol>
-      </div>
-
-      <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem">
-        <button class="btn btn-primary" onclick="checkPayment(${payment?.id || 0})">Jag har betalat</button>
-        <button class="btn btn-outline" onclick="navigate('dashboard')">Gå till översikt</button>
+    <div style="text-align:center;padding:4rem 2rem">
+      <div style="font-size:3rem;margin-bottom:1rem">⏳</div>
+      <h1>Verifierar betalning...</h1>
+      <p class="subtitle">Vi kontrollerar din betalning. Det tar bara några sekunder.</p>
+      <div class="loading" style="margin:2rem 0">
+        <div class="spinner"></div>
       </div>
     </div>
   `;
 }
 
-async function checkPayment(paymentId) {
-  if (!paymentId) { alert('Ingen betalning att kolla'); return; }
+async function handlePaymentReturn(sessionId) {
+  if (!sessionId) return;
+
   try {
-    const data = await api(`/swish/status/${paymentId}`);
-    const p = data.payment;
-    if (p.status === 'paid') {
-      alert('✅ Betalning mottagen! Din prenumeration är aktiverad.');
+    const data = await api('/stripe/verify', {
+      method: 'POST', body: JSON.stringify({ sessionId })
+    });
+
+    if (data.payment?.status === 'paid') {
+      document.getElementById('page-payment').innerHTML = `
+        <div style="text-align:center;padding:4rem 2rem">
+          <div style="font-size:3rem;margin-bottom:1rem">✅</div>
+          <h1>Betalning mottagen!</h1>
+          <p class="subtitle">Din prenumeration är aktiverad. Dina briefs börjar komma inom kort.</p>
+          <a href="#dashboard" class="btn btn-primary" style="margin-top:1.5rem">Gå till översikt</a>
+        </div>
+      `;
       await loadDashboardData();
-      navigate('dashboard');
-    } else if (p.status === 'created' || p.status === 'pending') {
-      alert('⏳ Betalningen väntar fortfarande. Kontrollera att du genomfört Swish-betalningen.');
     } else {
-      alert('Status: ' + p.status);
+      document.getElementById('page-payment').innerHTML = `
+        <div style="text-align:center;padding:4rem 2rem">
+          <div style="font-size:3rem;margin-bottom:1rem">⏳</div>
+          <h1>Betalningen väntar fortfarande</h1>
+          <p class="subtitle">Om du nyss betalat, vänta några sekunder och ladda om sidan.</p>
+          <a href="#pricing" class="btn btn-primary" style="margin-top:1.5rem">Tillbaka till priser</a>
+        </div>
+      `;
+      // Poll once more after 3 seconds
+      setTimeout(() => handlePaymentReturn(sessionId), 3000);
     }
   } catch (err) {
-    alert('Fel: ' + err.message);
+    document.getElementById('page-payment').innerHTML = `
+      <div style="text-align:center;padding:4rem 2rem">
+        <div style="font-size:3rem;margin-bottom:1rem">❌</div>
+        <h1>Kunde inte verifiera betalning</h1>
+        <p class="subtitle">${esc(err.message)}</p>
+        <a href="#pricing" class="btn btn-primary" style="margin-top:1.5rem">Försök igen</a>
+      </div>
+    `;
   }
 }
 
@@ -698,7 +672,7 @@ function renderProfile() {
             <input type="text" id="profile-name" class="form-input" value="${esc(u.name || '')}">
           </div>
           <div class="form-group">
-            <label>Telefon (för Swish)</label>
+            <label>Telefon</label>
             <input type="tel" id="profile-phone" class="form-input" value="${esc(u.phone || '')}" placeholder="0701234567">
           </div>
           <button type="submit" class="btn btn-primary">Spara</button>

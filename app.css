@@ -1,4 +1,4 @@
-/* BriefBot — Complete Styles */
+/* BriefBot — Complete Styles (Stripe) */
 :root {
   --bg: #0a0a0b;
   --bg-card: #18181b;
@@ -101,6 +101,14 @@ body {
 .modal { background: var(--bg-card); border-radius: var(--radius-lg); padding: 2rem; width: 90%; max-width: 500px; border: 1px solid var(--border); }
 .modal h2 { margin-bottom: 1.25rem; color: #fff; }
 .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+
+/* ====== Spinner ====== */
+.spinner {
+  width: 40px; height: 40px; border: 3px solid var(--border);
+  border-top: 3px solid var(--primary); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 0 auto;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 /* ====== Hero section ====== */
 .hero {
@@ -237,12 +245,6 @@ body {
 .auth-card .btn { width: 100%; justify-content: center; margin-top: 1rem; }
 .auth-link { text-align: center; margin-top: 1rem; font-size: 0.875rem; color: var(--text-muted); }
 .auth-link a { color: var(--primary); text-decoration: none; }
-
-/* Swish payment */
-.swish-section { text-align: center; padding: 2rem; }
-.swish-qr { margin: 2rem auto; width: 200px; height: 200px; }
-.swish-steps { text-align: left; max-width: 400px; margin: 2rem auto; color: var(--text-muted); font-size: 0.9rem; }
-.swish-steps li { padding: 0.4rem 0; }
 
 /* Footer */
 .footer { text-align: center; padding: 2rem; color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid var(--border); }
