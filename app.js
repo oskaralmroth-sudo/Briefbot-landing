@@ -146,6 +146,7 @@ function render() {
       case 'signup': renderSignup(); break;
       case 'faq': renderFAQ(false); break;
       case 'blog': renderBlogList(); break;
+      case 'pricing': renderPricing(); break;
       case 'reset': renderResetPassword(); break;
       default:
         if (page.startsWith('blog/')) { renderBlogPost(page.slice(5)); break; }
