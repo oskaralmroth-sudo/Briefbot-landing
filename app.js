@@ -151,7 +151,11 @@ function render() {
         if (page.startsWith('blog/')) { renderBlogPost(page.slice(5)); break; }
         navigate('home'); return;
     }
-    const el = document.getElementById(page === 'faq' ? 'page-faq-out' : 'page-' + page);
+    const el = document.getElementById(
+      page === 'faq' ? 'page-faq-out' :
+      page === 'blog' || page.startsWith('blog/') ? 'page-blog-out' :
+      'page-' + page
+    );
     if (el) {
       el.classList.add('active');
       el.style.animation = 'fadeIn 0.25s ease';
