@@ -104,6 +104,13 @@ window.addEventListener('hashchange', () => {
   }
 });
 
+// Load data on page refresh if logged in
+document.addEventListener('DOMContentLoaded', () => {
+  if (state.token) {
+    loadDashboardData();
+  }
+});
+
 // ====== Rendering ======
 function render() {
   const page = getPage();
