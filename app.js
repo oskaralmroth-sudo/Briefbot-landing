@@ -717,7 +717,7 @@ function renderDashboard() {
             <div class="topic-card-sm">
               <div class="topic-card-info">
                 <div class="topic-card-name">${esc(t.name)}</div>
-                <div class="topic-card-meta">${t.keywords ? esc(t.keywords) : 'Allmänt'} · ${t.frequency === 'weekly' ? 'Veckovis' : 'Dagligen'}</div>
+                <div class="topic-card-meta">${t.keywords ? esc(t.keywords) : 'Allmänt'} · ${t.frequency === 'weekly' ? 'Veckovis' : t.frequency === 'monthly' ? 'Månadsvis' : t.frequency === 'manual' ? 'Manuellt' : 'Dagligen'}</div>
               </div>
               <div style="display:flex;align-items:center;gap:0.5rem">
                 <span class="status-dot ${t.active ? 'dot-green' : 'dot-gray'}"></span>
@@ -785,7 +785,7 @@ function renderTopics() {
           <div class="topic-info">
             <div class="topic-name">${esc(t.name)}</div>
             <div class="topic-meta">
-              ${esc(t.keywords || 'Allmänt')} · ${t.frequency === 'weekly' ? 'Veckovis' : 'Dagligen'}
+              ${esc(t.keywords || 'Allmänt')} · ${t.frequency === 'weekly' ? 'Veckovis' : t.frequency === 'monthly' ? 'Månadsvis' : t.frequency === 'manual' ? 'Manuellt' : 'Dagligen'}
               ${t.sources ? ' · Källa: ' + esc(t.sources) : ''}
               ${lastDate ? ` · Senast: ${lastDate}` : ''}
               · <span class="badge badge-active" style="font-size:0.7rem">${roleLabels[t.role]||'Allmän'}</span>
@@ -831,8 +831,10 @@ function showTopicForm(topic) {
         <div class="form-group">
           <label>Frekvens</label>
           <select id="topic-frequency" class="form-input">
+            <option value="manual" ${(!topic || topic?.frequency === 'manual') ? 'selected' : ''}>Manuellt — skickas inte automatiskt</option>
             <option value="daily" ${topic?.frequency === 'daily' ? 'selected' : ''}>Dagligen — brief varje vardag</option>
             <option value="weekly" ${topic?.frequency === 'weekly' ? 'selected' : ''}>Veckovis — brief varje måndag</option>
+            <option value="monthly" ${topic?.frequency === 'monthly' ? 'selected' : ''}>Månadsvis — brief första dagen varje månad</option>
           </select>
         </div>
         <div class="form-group">
@@ -1355,7 +1357,7 @@ async function showTimeline(topicId) {
           <div>
             <h2 style="margin:0 0 0.25rem">${esc(t.name)}</h2>
             <div style="color:var(--text-muted);font-size:0.85rem">
-              Perspektiv: ${roleLabels[t.role]||'Allmän'} · ${t.frequency === 'weekly' ? 'Veckovis' : 'Dagligen'}
+              Perspektiv: ${roleLabels[t.role]||'Allmän'} · ${t.frequency === 'weekly' ? 'Veckovis' : t.frequency === 'monthly' ? 'Månadsvis' : t.frequency === 'manual' ? 'Manuellt' : 'Dagligen'}
               ${t.keywords ? '· ' + esc(t.keywords) : ''}
             </div>
           </div>
