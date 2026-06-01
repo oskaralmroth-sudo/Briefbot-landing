@@ -146,7 +146,7 @@ function render() {
       case 'signup': renderSignup(); break;
       case 'faq': renderFAQ(false); break;
       case 'blog': renderBlogList(); break;
-      case 'pricing': renderPricing(true); break;
+      case 'pricing': renderPricing(); break;
       case 'reset': renderResetPassword(); break;
       default:
         if (page.startsWith('blog/')) { renderBlogPost(page.slice(5)); break; }
@@ -155,7 +155,6 @@ function render() {
     const el = document.getElementById(
       page === 'faq' ? 'page-faq-out' :
       page === 'blog' || page.startsWith('blog/') ? 'page-blog-out' :
-      page === 'pricing' ? 'page-pricing-out' :
       'page-' + page
     );
     if (el) {
@@ -1383,73 +1382,12 @@ async function showTimeline(topicId) {
 }
 
 // ====== Pricing & Payment (Stripe) ======
-function renderPricing(loggedOut) {
+function renderPricing() {
   const sub = state.subscription || {};
   const tier = state.user?.subscription_tier || 'free';
   const isActive = sub.status === 'active';
   const tierLabels = { free:'Gratis', pro:'Pro', team:'Team' };
   const tierLimits = { free:1, pro:5, team:20 };
-  const target = loggedOut ? 'page-pricing-out' : 'page-pricing';
-  const isLoggedOut = loggedOut || !state.token;
-
-  if (isLoggedOut) {
-    // Landing-style pricing for logged-out visitors
-    document.getElementById('page-pricing-out').innerHTML = `
-    <div class="landing-pricing">
-      <div class="container">
-        <h1>Välj din plan</h1>
-        <p class="subtitle">Börja gratis — ingen bindningstid. Uppgradera när du växer.</p>
-
-        <div class="plans-grid centered">
-          <div class="pricing-card">
-            <h2>BriefBot Free</h2>
-            <div class="price">0 kr <span>/mån</span></div>
-            <ul>
-              <li>1 bevakningsämne</li>
-              <li>Veckovisa briefs</li>
-              <li>Dashboard med tidslinje</li>
-              <li>Grundläggande analys</li>
-            </ul>
-            <a href="#signup" class="btn btn-outline" onclick="navigate('signup')" style="width:100%;justify-content:center">Starta gratis</a>
-          </div>
-
-          <div class="pricing-card pricing-featured">
-            <div class="pricing-badge">Populär</div>
-            <h2>BriefBot Pro</h2>
-            <div class="price">99 kr <span>/mån</span></div>
-            <ul>
-              <li>5 bevakningsämnen</li>
-              <li>Dagliga briefs</li>
-              <li>Slack-integration</li>
-              <li>Rollanpassad analys</li>
-              <li>Trendanalys över tid</li>
-              <li>Företagsanpassade briefs</li>
-            </ul>
-            <a href="#signup" class="btn btn-primary" onclick="navigate('signup')" style="width:100%;justify-content:center">Starta gratis provperiod</a>
-          </div>
-
-          <div class="pricing-card">
-            <h2>BriefBot Team</h2>
-            <div class="price">299 kr <span>/mån</span></div>
-            <ul>
-              <li>20 bevakningsämnen</li>
-              <li>Allt i Pro ingår</li>
-              <li>Prioriterad support</li>
-              <li>API-tillgång</li>
-            </ul>
-            <a href="#signup" class="btn btn-outline" onclick="navigate('signup')" style="width:100%;justify-content:center">Kontakta oss</a>
-          </div>
-        </div>
-
-        <div class="pricing-faq" style="margin-top:3rem;text-align:center;color:var(--text-muted)">
-          <p>💳 Alla priser i SEK. Ingen bindningstid. Avsluta när du vill.</p>
-          <p style="margin-top:0.5rem">❓ Frågor? <a href="#faq" onclick="navigate('faq')" style="color:var(--primary)">Kolla FAQ</a></p>
-        </div>
-      </div>
-    </div>
-    `;
-    return;
-  }
 
   document.getElementById('page-pricing').innerHTML = `
     <div class="page-header">
