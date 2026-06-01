@@ -145,8 +145,11 @@ function render() {
       case 'login': renderLogin(); break;
       case 'signup': renderSignup(); break;
       case 'faq': renderFAQ(false); break;
+      case 'blog': renderBlogList(); break;
       case 'reset': renderResetPassword(); break;
-      default: navigate('home'); return;
+      default:
+        if (page.startsWith('blog/')) { renderBlogPost(page.slice(5)); break; }
+        navigate('home'); return;
     }
     const el = document.getElementById(page === 'faq' ? 'page-faq-out' : 'page-' + page);
     if (el) {
@@ -394,6 +397,7 @@ function renderHome() {
       <a href="#home" class="nav-logo" onclick="navigate('home',event)"><img src="/briefbot-logo.svg" alt="BriefBot" style="height:28px;vertical-align:middle"></a>
       <div class="nav-links">
         <a href="#faq" onclick="navigate('faq',event)">FAQ</a>
+        <a href="#blog" onclick="navigate('blog',event)">Blogg</a>
         <a href="#pricing" onclick="renderPricing();navigate('pricing',event)" class="">Pris</a>
         <a href="#login" onclick="navigate('login',event)">Logga in</a>
         <a href="#signup" onclick="navigate('signup',event)" class="btn btn-primary btn-sm">🚀 Kom igång gratis</a>
@@ -1753,6 +1757,72 @@ function toggleFAQ(btn) {
 }
 
 // ====== CSS animations (injected once) ======
+// ====== Blog ======
+async function renderBlogList() {
+  const container = document.getElementById('page-blog-out') || document.getElementById('page-blog');
+  if (!container) return;
+  container.innerHTML = '<div class="loading">Laddar blogg...</div>';
+  try {
+    const r = await fetch('/api/blog');
+    const d = await r.json();
+    if (!d.posts || !d.posts.length) {
+      container.innerHTML = '<div class="empty-state" style="padding:4rem;text-align:center"><h2>BriefBot Blogg</h2><p>Inga inlägg än. Kom snart tillbaka!</p></div>';
+      return;
+    }
+    container.innerHTML = `
+      <div class="blog-page">
+        <h1 style="font-size:2rem;margin-bottom:0.5rem;text-align:center">📝 BriefBot Blogg</h1>
+        <p style="text-align:center;color:var(--muted);margin-bottom:2rem">Insikter om konkurrentbevakning, SEO, marknadsföring och AI för småföretag</p>
+        <div class="blog-grid">
+          ${d.posts.map(p => `
+            <article class="blog-card" onclick="navigate('blog/${p.slug}',event)">
+              <h3>${esc(p.title)}</h3>
+              <p class="blog-excerpt">${esc(p.excerpt)}</p>
+              <div class="blog-meta">${p.author} · ${p.created_at ? p.created_at.slice(0,10) : ''}</div>
+            </article>
+          `).join('')}
+        </div>
+      </div>`;
+  } catch (e) {
+    container.innerHTML = '<div class="empty-state" style="padding:4rem;text-align:center"><h2>Kunde inte ladda bloggen</h2></div>';
+  }
+}
+
+async function renderBlogPost(slug) {
+  const container = document.getElementById('page-blog-out') || document.getElementById('page-blog');
+  if (!container) return;
+  container.innerHTML = '<div class="loading">Laddar...</div>';
+  try {
+    const r = await fetch('/api/blog/' + slug);
+    if (!r.ok) { container.innerHTML = '<div class="empty-state" style="padding:4rem;text-align:center"><h2>Inlägget hittades inte</h2><a href="#blog" onclick="navigate(\'blog\',event)" class="btn btn-primary">← Tillbaka till bloggen</a></div>'; return; }
+    const d = await r.json();
+    const p = d.post;
+    container.innerHTML = `
+      <div class="blog-post-page">
+        <a href="#blog" onclick="navigate('blog',event)" style="display:inline-block;margin-bottom:1rem;color:var(--primary)">← Tillbaka till bloggen</a>
+        <article>
+          <h1 style="font-size:1.8rem;margin-bottom:0.5rem">${esc(p.title)}</h1>
+          <div class="blog-meta" style="margin-bottom:2rem">${p.author} · ${p.created_at ? p.created_at.slice(0,10) : ''}</div>
+          <div class="blog-content">${markdownToHtml(p.content)}</div>
+          <hr style="margin:2rem 0">
+          <p style="text-align:center"><a href="https://briefbot.se/#signup" class="btn btn-primary btn-lg">🚀 Prova BriefBot gratis</a></p>
+        </article>
+      </div>`;
+  } catch (e) {
+    container.innerHTML = '<div class="empty-state" style="padding:4rem;text-align:center"><h2>Kunde inte ladda inlägget</h2></div>';
+  }
+}
+
+function markdownToHtml(md) {
+  if (!md) return '';
+  return md
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^(.+)$/gm, line => line.trim() ? (line.startsWith('<') ? line : `<p>${line}</p>`) : '<br>');
+}
+
 (function injectAnimations() {
   if (document.getElementById('bb-animations')) return;
   const style = document.createElement('style');

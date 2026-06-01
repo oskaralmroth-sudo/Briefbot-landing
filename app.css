@@ -611,6 +611,23 @@ select.form-input { cursor: pointer; appearance: none; background-image: url("da
 .faq-contact { text-align: center; margin-top: 2rem; color: var(--text-muted); font-size: 0.85rem; }
 .faq-contact a { color: var(--primary); }
 
+/* Blog */
+.blog-page, .blog-post-page { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+.blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.blog-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+.blog-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.blog-card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; color: #fff; line-height: 1.4; }
+.blog-excerpt { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+.blog-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; }
+.blog-content { line-height: 1.8; font-size: 0.95rem; }
+.blog-content h1, .blog-content h2, .blog-content h3 { margin: 1.5rem 0 0.75rem; }
+.blog-content h1 { font-size: 1.5rem; }
+.blog-content h2 { font-size: 1.25rem; color: #fff; }
+.blog-content h3 { font-size: 1.1rem; }
+.blog-content p { margin-bottom: 1rem; }
+.blog-content strong { color: #fff; }
+.blog-content a { color: var(--primary); text-decoration: underline; }
+
 /* ====== Cookie banner ====== */
 .cookie-banner {
   position: fixed; bottom: 0; left: 0; right: 0;
