@@ -96,6 +96,7 @@ window.addEventListener('hashchange', () => {
     state.token = hashParams.token;
     localStorage.setItem('bb_token', hashParams.token);
     state.user = { name: hashParams.name || '', email: hashParams.email || '' };
+    history.replaceState(null, '', window.location.pathname + '?v=' + Date.now() + '#dashboard');
     navigate('dashboard');
     loadDashboardData();
     showToast('Inloggad med Google! 🎉', 'success');
@@ -1949,6 +1950,7 @@ function esc(s) {
     state.token = hashParams.token;
     localStorage.setItem('bb_token', hashParams.token);
     state.user = { name: hashParams.name || '', email: hashParams.email || '' };
+    history.replaceState(null, '', window.location.pathname + '#dashboard');
     navigate('dashboard');
     loadDashboardData();
     showToast('Inloggad med Google! 🎉', 'success');
