@@ -160,6 +160,16 @@ function render() {
       el.classList.add('active');
       el.style.animation = 'fadeIn 0.25s ease';
     }
+    // Ensure async rendered pages get active class after content loads
+    if (page === 'blog' || page.startsWith('blog/')) {
+      setTimeout(() => {
+        const blogEl = document.getElementById('page-blog-out');
+        if (blogEl && !blogEl.classList.contains('active')) {
+          blogEl.classList.add('active');
+          blogEl.style.animation = 'fadeIn 0.25s ease';
+        }
+      }, 100);
+    }
   }
 
   // Close modals
