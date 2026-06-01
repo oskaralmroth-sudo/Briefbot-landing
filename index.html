@@ -1,47 +1,119 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BriefBot — Automatiserad marknadsbevakning</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/app.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📬</text></svg>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BriefBot — Automatisk konkurrentbevakning för småföretag | Från 99 kr/mån</title>
+  <meta name="description" content="BriefBot är billig konkurrentbevakning för småföretag. Få dagliga AI-briefs om dina konkurrenter — precis som storföretagen. Från 99 kr/mån. Första ämnet gratis för alltid.">
+  <meta name="keywords" content="konkurrentbevakning, marknadsbevakning, AI-analys, omvärldsbevakning, konkurrentanalys, briefbot, svensk AI, småföretag, billig omvärldsbevakning, automatisk konkurrentanalys">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://briefbot.se/">
+
+  <!-- Open Graph / Social preview -->
+  <meta property="og:title" content="BriefBot — Konkurrentbevakning för småföretag | Från 99 kr/mån">
+  <meta property="og:description" content="Billig automatisk konkurrentbevakning för småföretag. AI-briefs med aktuell webbdata. Från 99 kr/mån. Första ämnet gratis för alltid.">
+  <meta property="og:url" content="https://briefbot.se/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="sv_SE">
+  <meta property="og:image" content="https://briefbot.se/briefbot-logo-square.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BriefBot — Konkurrentbevakning för småföretag | Från 99 kr/mån">
+  <meta name="twitter:description" content="Billig automatisk konkurrentbevakning. AI-briefs med aktuell data. Från 99 kr/mån. Första ämnet gratis.">
+  <meta name="twitter:image" content="https://briefbot.se/briefbot-logo-square.svg">
+
+  <!-- Structured data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "BriefBot",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "AI-driven konkurrentbevakning för småföretag. Få dagliga briefs om dina konkurrenter automatiskt. Från 99 kr/mån.",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Free",
+        "price": "0",
+        "priceCurrency": "SEK",
+        "description": "1 ämne gratis för alltid"
+      },
+      {
+        "@type": "Offer",
+        "name": "Pro",
+        "price": "99",
+        "priceCurrency": "SEK"
+      }
+    ],
+    "author": {
+      "@type": "Organization",
+      "name": "BriefBot"
+    }
+  }
+  </script>
+
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="/app.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/briefbot-logo-square.svg">
+  <link rel="apple-touch-icon" href="/briefbot-logo-square.svg">
 </head>
 <body>
-    <!-- Logged out pages -->
-    <div id="app-loggedout" class="page">
-        <div id="page-home" class="page active"></div>
-        <div id="page-login" class="page"></div>
-        <div id="page-signup" class="page"></div>
-    </div>
+  <!-- Toast container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- Dashboard (logged in) -->
-    <div id="app-dashboard" class="page">
-        <nav class="nav" id="dash-nav"></nav>
-        <div class="dashboard-grid">
-            <aside class="sidebar">
-                <h3>Navigering</h3>
-                <ul class="sidebar-menu">
-                    <li><a href="#dashboard">📊 Översikt</a></li>
-                    <li><a href="#topics">📡 Ämnen</a></li>
-                    <li><a href="#briefs">📬 Briefs</a></li>
-                    <li><a href="#pricing">💰 Pris</a></li>
-                    <li><a href="#profile">👤 Profil</a></li>
-                </ul>
-            </aside>
-            <main class="main-content">
-                <div id="page-dashboard" class="page"></div>
-                <div id="page-topics" class="page"></div>
-                <div id="page-briefs" class="page"></div>
-                <div id="page-pricing" class="page"></div>
-                <div id="page-payment" class="page"></div>
-                <div id="page-profile" class="page"></div>
-            </main>
-        </div>
-    </div>
+  <!-- Cookie consent banner (hidden by default) -->
+  <div id="cookie-consent" class="cookie-banner" role="dialog" aria-label="Cookie-inställningar">
+    <p>BriefBot använder cookies för att fungera och för att förbättra din upplevelse. <a href="#faq" onclick="navigate('faq')">Läs mer</a></p>
+    <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Godkänn</button>
+  </div>
 
-    <script src="/app.js"></script>
+  <!-- Outlogged app (public pages) -->
+  <div id="app-loggedout" class="page active">
+    <!-- Pages rendered by app.js -->
+    <div id="page-home" class="page"></div>
+    <div id="page-login" class="page"></div>
+    <div id="page-signup" class="page"></div>
+    <div id="page-reset" class="page"></div>
+    <div id="page-faq-out" class="page"></div>
+  </div>
+
+  <!-- Logged-in app -->
+  <div id="app-dashboard" class="page">
+    <nav id="dash-nav" class="nav"></nav>
+    <div class="dashboard-grid">
+      <aside class="sidebar" id="sidebar">
+        <h3>Meny</h3>
+        <ul class="sidebar-menu">
+          <li><a href="#dashboard" onclick="navigate('dashboard')">📊 Översikt</a></li>
+          <li><a href="#topics" onclick="navigate('topics')">📡 Ämnen</a></li>
+          <li><a href="#briefs" onclick="navigate('briefs')">📄 Briefs</a></li>
+          <li><a href="#pricing" onclick="navigate('pricing')">💳 Pris</a></li>
+          <li><a href="#profile" onclick="navigate('profile')">👤 Profil</a></li>
+          <li><a href="#faq" onclick="navigate('faq')">❓ FAQ</a></li>
+          <li style="margin-top:2rem"><a href="#" onclick="handleLogout()" style="color:var(--danger)">🚪 Logga ut</a></li>
+        </ul>
+      </aside>
+      <main class="main-content" id="main-content">
+        <div id="page-dashboard" class="page"></div>
+        <div id="page-topics" class="page"></div>
+        <div id="page-briefs" class="page"></div>
+        <div id="page-newsletter" class="page"></div>
+        <div id="page-pricing" class="page"></div>
+        <div id="page-profile" class="page"></div>
+        <div id="page-payment" class="page"></div>
+        <div id="page-faq" class="page"></div>
+        <div id="page-reset" class="page"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
 </body>
 </html>
