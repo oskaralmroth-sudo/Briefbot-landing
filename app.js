@@ -218,10 +218,10 @@ function renderSidebar(page) {
 
 // ====== Sidebar toggle for mobile ======
 function toggleSidebar() {
-  document.getElementById('sidebar')?.classList.toggle('sidebar-open');
+  document.getElementById('sidebar')?.classList.toggle('open');
 }
 function closeSidebar() {
-  document.getElementById('sidebar')?.classList.remove('sidebar-open');
+  document.getElementById('sidebar')?.classList.remove('open');
 }
 
 // ====== Auth ======

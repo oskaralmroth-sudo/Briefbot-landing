@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Simplified mark: rounded square with minimalist B -->
+  <rect x="15" y="18" width="74" height="74" rx="16" ry="16" fill="url(#g)"/>
+
+  <!-- Minimalist B letter -->
+  <path d="M32 32 L32 78 M32 32 L52 32 Q62 32 62 42 Q62 50 52 50 L32 50 M32 50 L52 50 Q62 50 62 60 Q62 70 52 70 L32 70"
+        stroke="white" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Small accent dot -->
+  <circle cx="74" cy="32" r="3" fill="#0d9488" opacity="0.7"/>
+
+  <!-- Text -->
+  <text x="110" y="62" font-family="Inter,'Segoe UI',-apple-system,Helvetica Neue,Arial,sans-serif" font-size="34" font-weight="700" fill="#1e3a5f" letter-spacing="-0.5">BriefBot</text>
+
+  <!-- Tagline -->
+  <text x="112" y="86" font-family="Inter,'Segoe UI',-apple-system,Helvetica Neue,Arial,sans-serif" font-size="10" fill="#94a3b8" letter-spacing="4" font-weight="500">KONKURRENTBEVAKNING</text>
+</svg>

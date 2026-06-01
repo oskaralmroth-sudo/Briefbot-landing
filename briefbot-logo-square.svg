@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect x="20" y="20" width="160" height="160" rx="36" ry="36" fill="url(#g)"/>
+
+  <!-- Inner highlight -->
+  <rect x="20" y="20" width="160" height="160" rx="36" ry="36" fill="white" opacity="0.06"/>
+
+  <!-- Minimalist B letter -->
+  <path d="M65 55 L65 145 M65 55 L95 55 Q112 55 112 75 Q112 92 95 92 L65 92 M65 92 L97 92 Q114 92 114 112 Q114 130 97 130 L65 130"
+        stroke="white" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Accent dot -->
+  <circle cx="140" cy="60" r="4.5" fill="white" opacity="0.8"/>
+</svg>
