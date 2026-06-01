@@ -1775,9 +1775,11 @@ function toggleFAQ(btn) {
 async function renderBlogList() {
   const container = document.getElementById('page-blog-out') || document.getElementById('page-blog');
   if (!container) return;
-  container.innerHTML = '<div class="loading">Laddar blogg...</div>';
+  container.innerHTML = '<div style="padding:2rem;text-align:center">Laddar blogg...</div>';
+  container.classList.add('active');
   try {
     const r = await fetch('/api/blog');
+    if (!r.ok) throw new Error('Fetch failed');
     const d = await r.json();
     if (!d.posts || !d.posts.length) {
       container.innerHTML = '<div class="empty-state" style="padding:4rem;text-align:center"><h2>BriefBot Blogg</h2><p>Inga inlägg än. Kom snart tillbaka!</p></div>';
@@ -1806,6 +1808,7 @@ async function renderBlogPost(slug) {
   const container = document.getElementById('page-blog-out') || document.getElementById('page-blog');
   if (!container) return;
   container.innerHTML = '<div class="loading">Laddar...</div>';
+  container.classList.add('active');
   try {
     const r = await fetch('/api/blog/' + slug);
     if (!r.ok) { container.innerHTML = '<div class="empty-state" style="padding:4rem;text-align:center"><h2>Inlägget hittades inte</h2><a href="#blog" onclick="navigate(\'blog\',event)" class="btn btn-primary">← Tillbaka till bloggen</a></div>'; return; }
