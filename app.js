@@ -394,36 +394,26 @@ function renderHome() {
       <a href="#home" class="nav-logo" onclick="navigate('home',event)"><img src="/briefbot-logo.svg" alt="BriefBot" style="height:28px;vertical-align:middle"></a>
       <div class="nav-links">
         <a href="#faq" onclick="navigate('faq',event)">FAQ</a>
+        <a href="#pricing" onclick="renderPricing();navigate('pricing',event)" class="">Pris</a>
         <a href="#login" onclick="navigate('login',event)">Logga in</a>
         <a href="#signup" onclick="navigate('signup',event)" class="btn btn-primary btn-sm">🚀 Kom igång gratis</a>
       </div>
     </nav>
     <section class="hero">
-      <div class="hero-badge">💼 Byggd för småföretag — från 0 kr/mån</div>
-      <h1>Din konkurrentbevakning<br><span>— automatiserad för 99 kr/mån</span></h1>
-      <p class="hero-sub">Få dagliga AI-briefs om dina konkurrenter — precis som storföretagen. <strong>Från 99 kr/mån</strong>. Första ämnet gratis för alltid. Inget kontokort.</p>
-      <div class="hero-actions">
+      <div class="hero-badge anim-fade">💼 Byggd för småföretag — från 0 kr/mån</div>
+      <h1 class="anim-fade-up" style="animation-delay:0.1s">Din konkurrentbevakning<br><span>— automatiserad för 99 kr/mån</span></h1>
+      <p class="hero-sub anim-fade-up" style="animation-delay:0.2s">Få dagliga AI-briefs om dina konkurrenter — precis som storföretagen. <strong>Från 99 kr/mån</strong>. Första ämnet gratis för alltid. Inget kontokort.</p>
+      <div class="hero-actions anim-fade-up" style="animation-delay:0.3s">
         <a href="#signup" class="btn btn-primary btn-lg" onclick="navigate('signup',event)">🚀 Starta gratis — 14 dagar</a>
         <a href="#features" class="btn btn-outline btn-lg" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Läs mer</a>
       </div>
-      <div class="hero-stats">
+      <div class="hero-stats anim-fade-up" style="animation-delay:0.4s">
         <div class="hero-stat"><strong>99 kr/mån</strong> istället för 15.000</div>
         <div class="hero-stat"><strong>1 ämne</strong> gratis för alltid</div>
         <div class="hero-stat"><strong>AI</strong> med Google Search</div>
       </div>
     </section>
-    <section class="logos-section">
-      <p class="logos-title">Perfekt för</p>
-      <div class="logos-row">
-        <span>🔧 Småföretagare</span>
-        <span>📈 Marknadschefer</span>
-        <span>🏢 Säljare</span>
-        <span>💼 Konsulter</span>
-        <span>🚀 Startups</span>
-        <span>🏭 VD/ägare</span>
-      </div>
-    </section>
-    <section class="usp-section">
+    <section class="usp-section stagger">
       <div class="usp-grid">
         <div class="usp-card">
           <div class="usp-icon">🤖</div>
@@ -442,7 +432,41 @@ function renderHome() {
         </div>
       </div>
     </section>
-    <div class="features-grid" id="features">
+    <div class="logos-section">
+      <p class="logos-title">Perfekt för</p>
+      <div class="logos-row">
+        <span>🔧 Småföretagare</span>
+        <span>📈 Marknadschefer</span>
+        <span>🏢 Säljare</span>
+        <span>💼 Konsulter</span>
+        <span>🚀 Startups</span>
+        <span>🏭 VD/ägare</span>
+      </div>
+    </div>
+    <div class="how-it-works" id="features">
+      <h2>Så här fungerar det</h2>
+      <p>Kom igång på 30 sekunder — inget kontokort krävs</p>
+      <div class="steps stagger">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Skapa konto</h3>
+          <p>Registrera dig gratis. Första ämnet är alltid gratis.</p>
+        </div>
+        <div class="step-arrow">›</div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Välj ämne</h3>
+          <p>Ange bransch, konkurrenter eller nyckelord att bevaka.</p>
+        </div>
+        <div class="step-arrow">›</div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Få briefs</h3>
+          <p>AI med Google Search levererar dagliga analyser automatiskt.</p>
+        </div>
+      </div>
+    </div>
+    <div class="features-grid stagger">
       <div class="feature-card">
         <div class="feature-icon">🔍</div>
         <h3>Håll koll på konkurrenterna</h3>
@@ -459,101 +483,21 @@ function renderHome() {
         <p>Dashboard, Slack eller dela med teamet. Briefsen kommer till dig — du behöver inte leta.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Klart på 30 sekunder</h3>
-        <p>Ange ett ämne — få din första brief direkt. Inga installationer, ingen support, inget krångel.</p>
+        <div class="feature-icon">🏢</div>
+        <h3>Anpassat till ditt företag</h3>
+        <p>Fyll i bransch och konkurrenter — briefsen blir personliga och relevanta för just din verksamhet.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📊</div>
-        <h3>Dela insikter med teamet</h3>
-        <p>Generera en delningslänk och skicka briefs till kollegor, kunder eller styrelsen på en sekund.</p>
+        <h3>Trendanalys över tid</h3>
+        <p>Varje brief jämförs med föregående. Du ser utveckling, inte bara en ögonblicksbild.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">💰</div>
-        <h3>Från 99 kr/mån</h3>
-        <p>Betala med kort via Stripe. 14 dagars gratis provperiod — säg upp när du vill.</p>
+        <div class="feature-icon">🎯</div>
+        <h3>Rollanpassade perspektiv</h3>
+        <p>VD, säljare eller marknadschef — olika roller får olika insikter. Alla får relevant information.</p>
       </div>
-    </div>
-    <section class="how-it-works">
-      <h2>Så fungerar det</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <h3>Skapa konto</h3>
-          <p>Ange epost och lösenord. Inget kontokort behövs för att prova.</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <h3>Lägg till ämnen</h3>
-          <p>Berätta vad du vill bevaka — branscher, företag, trender.</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <h3>Få briefs varje dag</h3>
-          <p>BriefBot söker webben och levererar konkurrentanalyser.</p>
-        </div>
-        <div class="step-arrow">→</div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <h3>Fatta bättre beslut</h3>
-          <p>Med aktuell data och AI-insikter ligger du steget före.</p>
-        </div>
-      </div>
-    </section>
-    <section class="pricing-section" id="pricing-home">
-      <div class="pricing-card">
-        <div class="pricing-badge">Gratis för alltid</div>
-        <h2>BriefBot Free</h2>
-        <div class="price">0 kr <span>/mån</span></div>
-        <ul>
-          <li>1 bevakningsämne</li>
-          <li>Konkurrentanalys med Google Search</li>
-          <li>Veckovisa briefs</li>
-          <li>Dashboard med tidslinje</li>
-          <li>Inget kontokort — ingen bindningstid</li>
-        </ul>
-        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center" onclick="navigate('signup',event)">🚀 Starta gratis</a>
-      </div>
-      <div class="pricing-card pricing-featured">
-        <div class="pricing-badge">Populär</div>
-        <h2>BriefBot Pro</h2>
-        <div class="price">99 kr <span>/mån</span></div>
-        <ul>
-          <li>5 bevakningsämnen</li>
-          <li>Dagliga briefs</li>
-          <li>Slack-integration</li>
-          <li>Rollanpassad analys (VD/Sälj/Marknad)</li>
-          <li>Dela briefs via publik länk</li>
-        </ul>
-        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center" onclick="navigate('signup',event)">🚀 Kom igång</a>
-      </div>
-      <div class="pricing-card">
-        <h2>BriefBot Team</h2>
-        <div class="price">299 kr <span>/mån</span></div>
-        <ul>
-          <li>20 bevakningsämnen</li>
-          <li>Allt i Pro + Team-funktioner</li>
-          <li>Prioriterad support</li>
-          <li>API-tillgång</li>
-        </ul>
-        <a href="#signup" class="btn btn-primary" style="margin-top:1rem;width:100%;justify-content:center" onclick="navigate('signup',event)">Kontakta oss</a>
-      </div>
-    </section>
-    <div class="testimonial-section">
-      <div class="testimonial-card">
-        <p>"BriefBot sparar mig 2 timmar om dagen. Jag behöver inte längre manuellt läsa 15 nyhetssajter — briefsen fångar allt relevant."</p>
-        <div class="testimonial-author">— Företagsledare, byggbranschen</div>
-      </div>
-    </div>
-    <div class="cta-section">
-      <h2>Redo att prova?</h2>
-      <p>Gratis för alltid. Ett ämne, veckovisa briefs. Inget kontokort.</p>
-      <a href="#signup" class="btn btn-primary btn-lg" onclick="navigate('signup',event)">🚀 Starta gratis — inget kontokort</a>
-    </div>
-    <div class="footer"><p>© 2026 BriefBot.se — Drivs av AI. Byggt för dig.</p></div>
-  `;
+    </div>`;
 }
 
 // ====== Login / Signup ======
