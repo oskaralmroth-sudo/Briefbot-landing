@@ -15,11 +15,13 @@
   <meta property="og:url" content="https://briefbot.se/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
-  <meta property="og:image" content="https://briefbot.se/briefbot-logo-square.svg">
+  <meta property="og:image" content="https://briefbot.se/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="BriefBot — Konkurrentbevakning för småföretag | Från 99 kr/mån">
   <meta name="twitter:description" content="Billig automatisk konkurrentbevakning. AI-briefs med aktuell data. Från 99 kr/mån. Första ämnet gratis.">
-  <meta name="twitter:image" content="https://briefbot.se/briefbot-logo-square.svg">
+  <meta name="twitter:image" content="https://briefbot.se/og-image.png">
 
   <!-- Structured data for Google -->
   <script type="application/ld+json">
@@ -82,6 +84,26 @@
         "@type": "Question",
         "name": "Hur skiljer BriefBot sig från Meltwater?",
         "acceptedAnswer": { "@type": "Answer", "text": "Meltwater kostar från 15 000 kr/månad för storföretag. BriefBot kostar 0-99 kr/månad och är helautomatiserat med AI. Samma typ av insikter till en bråkdel av priset." }
+      },
+      {
+        "@type": "Question",
+        "name": "Är min data säker hos BriefBot?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Ja. All trafik är SSL-krypterad. Betalningar hanteras av Stripe. Servrarna finns inom EU. BriefBot är GDPR-kompatibel." }
+      },
+      {
+        "@type": "Question",
+        "name": "Kan jag avsluta min prenumeration när jag vill?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Ja, du kan säga upp när som helst. Ingen bindningstid, inga avgifter. Du behåller åtkomst under resten av perioden." }
+      },
+      {
+        "@type": "Question",
+        "name": "Vad kostar BriefBot?",
+        "acceptedAnswer": { "@type": "Answer", "text": "BriefBot kostar 99 kr/månad för upp till 5 ämnen. Första ämnet är gratis för alltid. 14 dagars gratis provperiod." }
+      },
+      {
+        "@type": "Question",
+        "name": "Hur fungerar konkurrentbevakningen?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Du lägger till ämnen du vill bevaka. BriefBot söker webben med Google Search och skapar AI-briefs på svenska med analys och handlingsrekommendationer." }
       }
     ]
   }
@@ -93,7 +115,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- App styles -->
-  <link rel="stylesheet" href="/app.css?v=4">
+  <link rel="stylesheet" href="/app.css?v=6">
 
   <!-- Favicon -->
   <link rel="icon" href="/briefbot-logo-square.svg">
@@ -106,7 +128,10 @@
   <!-- Cookie consent banner (hidden by default) -->
   <div id="cookie-consent" class="cookie-banner" role="dialog" aria-label="Cookie-inställningar">
     <p>BriefBot använder cookies för att fungera och för att förbättra din upplevelse. <a href="#faq" onclick="navigate('faq')">Läs mer</a></p>
-    <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Godkänn</button>
+    <div class="cookie-actions">
+      <button class="btn btn-outline btn-sm" onclick="rejectCookies()">Endast nödvändiga</button>
+      <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Godkänn alla</button>
+    </div>
   </div>
 
   <!-- Outlogged app (public pages) -->
@@ -151,6 +176,6 @@
     </div>
   </div>
 
-  <script src="/app.js?v=6"></script>
+  <script src="/app.js?v=7"></script>
 </body>
 </html>

@@ -84,6 +84,10 @@ function acceptCookies() {
   localStorage.setItem('bb_cookies', '1');
   document.getElementById('cookie-consent')?.classList.remove('cookie-visible');
 }
+function rejectCookies() {
+  localStorage.setItem('bb_cookies', '0');
+  document.getElementById('cookie-consent')?.classList.remove('cookie-visible');
+}
 
 window.addEventListener('hashchange', () => {
   const hashParams = getHashParams();
@@ -107,7 +111,7 @@ window.addEventListener('hashchange', () => {
 
 // Load data on page refresh if logged in
 document.addEventListener('DOMContentLoaded', () => {
-  if (state.token) {
+  if (state.token && !window._bb_init_done) {
     loadDashboardData();
   }
 });
@@ -280,13 +284,12 @@ async function handleSignup(e) {
   const email = document.getElementById('signup-email').value;
   const password = document.getElementById('signup-password').value;
   const name = document.getElementById('signup-name').value;
-  const phone = document.getElementById('signup-phone').value;
   const btn = e.target.querySelector('.btn');
   btn.disabled = true; btn.textContent = 'Skapar konto...';
 
   try {
     const data = await api('/auth/signup', {
-      method: 'POST', body: JSON.stringify({ email, password, name, phone })
+      method: 'POST', body: JSON.stringify({ email, password, name })
     });
     state.token = data.token;
     state.user = data.user;
@@ -298,7 +301,7 @@ async function handleSignup(e) {
     showToast('Konto skapat! Välkommen till BriefBot 🎉', 'success');
   } catch (err) {
     showToast(err.message, 'error');
-    btn.disabled = false; btn.textContent = 'Skapa konto';
+    btn.disabled = false; btn.textContent = 'Starta gratis provperiod';
   }
 }
 
@@ -354,9 +357,10 @@ async function loadDashboardData() {
 // ====== Onboarding ======
 function showOnboarding() {
   if (state.onboardingDone) return;
+  if (document.querySelector('.onboarding-modal')) return;
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
-  overlay.style.background = 'rgba(0,0,0,0.7)';
+  overlay.style.background = 'rgba(0,0,0,0.8)';
   overlay.innerHTML = `
     <div class="modal onboarding-modal" style="max-width:480px">
       <div class="onboarding-steps">
@@ -424,7 +428,7 @@ function renderHome() {
         <a href="#blog" onclick="navigate('blog',event)">Blogg</a>
         <a href="#pricing" onclick="renderPricing();navigate('pricing',event)" class="">Pris</a>
         <a href="#login" onclick="navigate('login',event)">Logga in</a>
-        <a href="#signup" onclick="navigate('signup',event)" class="btn btn-primary btn-sm">🚀 Kom igång gratis</a>
+        <a href="#signup" onclick="navigate('signup',event)" class="btn btn-primary btn-sm">Starta gratis</a>
       </div>
     </nav>
     <section class="hero">
@@ -432,7 +436,7 @@ function renderHome() {
       <h1 class="anim-fade-up" style="animation-delay:0.1s">Din konkurrentbevakning<br><span>— automatiserad för 99 kr/mån</span></h1>
       <p class="hero-sub anim-fade-up" style="animation-delay:0.2s">Få dagliga AI-briefs om dina konkurrenter — precis som storföretagen. <strong>Från 99 kr/mån</strong>. Första ämnet gratis för alltid. Inget kontokort.</p>
       <div class="hero-actions anim-fade-up" style="animation-delay:0.3s">
-        <a href="#signup" class="btn btn-primary btn-lg" onclick="navigate('signup',event)">🚀 Starta gratis — 14 dagar</a>
+        <a href="#signup" class="btn btn-primary btn-lg" onclick="navigate('signup',event)">Starta gratis provperiod</a>
         <a href="#features" class="btn btn-outline btn-lg" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Läs mer</a>
       </div>
       <div class="hero-stats anim-fade-up" style="animation-delay:0.4s">
@@ -525,7 +529,104 @@ function renderHome() {
         <h3>Rollanpassade perspektiv</h3>
         <p>VD, säljare eller marknadschef — olika roller får olika insikter. Alla får relevant information.</p>
       </div>
-    </div>`;
+    </div>
+    <!-- Branscher -->
+    <div class="used-by-section">
+      <h2>Byggd för svenska småföretag</h2>
+      <p class="used-by-sub">Oavsett bransch — BriefBot håller koll på det som är viktigt för just dig.</p>
+      <div class="used-by-grid">
+        <div class="used-by-card"><span class="used-by-icon">🏗️</span> Bygg & Fastighet</div>
+        <div class="used-by-card"><span class="used-by-icon">🛒</span> E-handel & Retail</div>
+        <div class="used-by-card"><span class="used-by-icon">💼</span> Konsult & Tjänster</div>
+        <div class="used-by-card"><span class="used-by-icon">🏭</span> Tillverkning</div>
+        <div class="used-by-card"><span class="used-by-icon">📱</span> Tech & IT</div>
+        <div class="used-by-card"><span class="used-by-icon">🚛</span> Transport & Logistik</div>
+      </div>
+    </div>
+    <!-- Demo Brief Section -->
+    <section class="demo-brief-section">
+      <h2>📋 Så här ser en brief ut</h2>
+      <p class="demo-subtitle">En AI-genererad konkurrentanalys — levererad till din dashboard varje dag.</p>
+      <div class="demo-brief-card">
+        <div class="demo-brief-header">
+          <span class="demo-brief-topic">Svensk e-handel</span>
+          <span class="demo-brief-date">Juni 2026</span>
+        </div>
+        <div class="demo-brief-body">
+          <div class="demo-section">
+            <strong>1) Sammanfattning</strong>
+            <p>Svensk e-handel fortsätter växa med ökad konkurrens från internationella aktörer. Konsumenternas pris- och hållbarhetsfokus driver fram nya strategier. Temu och Shein utmanar etablerade svenska aktörer med aggressiv prissättning och snabba leveranser.</p>
+          </div>
+          <div class="demo-section">
+            <strong>2) Konkurrentaktivitet</strong>
+            <p>Flera svenska e-handlare har sänkt fraktpriser och infört fri retur för att matcha internationella konkurrenter. Nya logistiklösningar och miljöcertifieringar används som konkurrensmedel. Temu ökade sin svenska kundbas med 40% under Q1.</p>
+          </div>
+          <div class="demo-section">
+            <strong>3) Trender och insikter</strong>
+            <p>Konsumenter prioriterar hållbarhet och transparens allt mer. Företag som kan visa upp klimatavtryck och etiska leveranskedjor vinner mark. Samtidigt pressar lågprisaktörer marginalerna för svenska e-handlare.</p>
+          </div>
+          <div class="demo-section">
+            <strong>4) Handlingsrekommendationer</strong>
+            <ul>
+              <li><strong>Se över fraktstrategi:</strong> Överväg fri frakt över en lägre beloppsgräns för att konkurrera med internationella aktörer.</li>
+              <li><strong>Kommunicera hållbarhet:</strong> Certifiera och marknadsför era hållbarhetsinitiativ — kunderna efterfrågar det.</li>
+              <li><strong>Utnyttja lokal närvaro:</strong> Marknadsför snabbare leveranser och svensk kundtjänst som konkurrensfördel.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="demo-brief-footer">
+          <span>Genererad av BriefBot · AI med Google Search</span>
+          <a href="#signup" class="btn btn-primary" onclick="navigate('signup',event)">Få egna briefs →</a>
+        </div>
+      </div>
+    </section>
+    <!-- Bottom CTA -->
+    <section class="bottom-cta">
+      <h2>Redo att hålla koll på dina konkurrenter?</h2>
+      <p>Få din första analys inom 24 timmar. Första ämnet är gratis — för alltid. Inget kontokort krävs.</p>
+      <div class="cta-badges">
+        <span class="badge-cta">✅ Inget kontokort</span>
+        <span class="badge-cta">✅ Ingen bindningstid</span>
+        <span class="badge-cta">✅ 14 dagars gratis provperiod</span>
+      </div>
+      <a href="#signup" class="btn btn-primary btn-lg" onclick="navigate('signup',event)" style="margin-top:1.5rem">Starta gratis provperiod</a>
+    </section>
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="/briefbot-logo.svg" alt="BriefBot" style="height:24px">
+          <p>Automatisk konkurrentbevakning för småföretag. AI med Google Search — från 99 kr/mån.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Produkt</h4>
+          <a href="#pricing" onclick="navigate('pricing',event)">Pris</a>
+          <a href="#faq" onclick="navigate('faq',event)">FAQ</a>
+          <a href="#blog" onclick="navigate('blog',event)">Blogg</a>
+        </div>
+        <div class="footer-links">
+          <h4>Företag</h4>
+          <a href="#home" onclick="navigate('home',event)">Hem</a>
+          <a href="#login" onclick="navigate('login',event)">Logga in</a>
+          <a href="#signup" onclick="navigate('signup',event)">Skapa konto</a>
+        </div>
+        <div class="footer-trust">
+          <h4>Säkert & tryggt</h4>
+          <div class="trust-row">
+            <span class="trust-item">🔒 SSL-krypterat</span>
+            <span class="trust-item">💳 Stripe-betalningar</span>
+          </div>
+          <div class="trust-row">
+            <span class="trust-item">🇪🇺 Data inom EU</span>
+            <span class="trust-item">📋 GDPR-kompatibelt</span>
+          </div>
+          <p class="footer-contact">Kontakt: <a href="mailto:hej@briefbot.se">hej@briefbot.se</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 BriefBot. Alla rättigheter förbehållna.</p>
+      </div>
+    </footer>`;
 }
 
 // ====== Login / Signup ======
@@ -568,8 +669,8 @@ function renderResetPassword() {
       <p>${token ? 'Ange ditt nya lösenord' : 'Skriv din e-postadress så skickar vi en återställningslänk'}</p>
       ${token ? `
         <form onsubmit="handleResetPassword(event)">
-          <div class="form-group"><label>Nytt lösenord</label><input type="password" id="reset-password" class="form-input" placeholder="Minst 6 tecken" required minlength="6"></div>
-          <div class="form-group"><label>Bekräfta lösenord</label><input type="password" id="reset-password2" class="form-input" placeholder="Samma som ovan" required minlength="6"></div>
+          <div class="form-group"><label>Nytt lösenord</label><input type="password" id="reset-password" class="form-input" placeholder="Minst 8 tecken" required minlength="8"></div>
+          <div class="form-group"><label>Bekräfta lösenord</label><input type="password" id="reset-password2" class="form-input" placeholder="Samma som ovan" required minlength="8"></div>
           <input type="hidden" id="reset-token" value="${token}">
           <button type="submit" class="btn btn-primary">Återställ lösenord</button>
         </form>
@@ -634,18 +735,24 @@ function renderSignup() {
     <div class="auth-page"><div class="auth-card auth-card-signup">
       <a href="#home" onclick="navigate('home',event)" style="color:var(--text-muted);text-decoration:none;display:inline-block;margin-bottom:1rem;font-size:0.85rem">← Tillbaka</a>
       <h1>Kom igång med BriefBot</h1>
-      <p>Skapa ditt konto — första briefen inom 24h. <strong>Gratis för alltid!</strong></p>
+      <p>Skapa ditt konto — första analysen inom 24h. <strong>Gratis för alltid!</strong></p>
       <div class="signup-benefits">
         <span>✅ Inget kontokort</span>
         <span>✅ Ingen bindningstid</span>
         <span>✅ Första ämnet gratis för alltid</span>
       </div>
+      <button type="button" class="btn btn-outline" onclick="loginWithGoogle()" style="width:100%;justify-content:center;margin-bottom:1rem">
+        G Fortsätt med Google
+      </button>
+      <div class="social-divider" style="margin:1rem 0;text-align:center;color:var(--text-muted);font-size:0.8rem;position:relative">
+        <span style="background:var(--bg);padding:0 0.5rem;position:relative;z-index:1">eller</span>
+        <div style="border-top:1px solid var(--border);margin-top:-0.6rem"></div>
+      </div>
       <form onsubmit="handleSignup(event)">
         <div class="form-group"><label>Namn</label><input type="text" id="signup-name" class="form-input" placeholder="Ditt namn" autocomplete="name"></div>
         <div class="form-group"><label>E-post *</label><input type="email" id="signup-email" class="form-input" placeholder="din@epost.se" required autocomplete="email"></div>
-        <div class="form-group"><label>Telefon (frivilligt)</label><input type="tel" id="signup-phone" class="form-input" placeholder="0701234567" autocomplete="tel"></div>
-        <div class="form-group"><label>Lösenord *</label><input type="password" id="signup-password" class="form-input" placeholder="Minst 6 tecken" required minlength="6" autocomplete="new-password"></div>
-        <button type="submit" class="btn btn-primary">Skapa konto — prova gratis i 14 dagar</button>
+        <div class="form-group"><label>Lösenord *</label><input type="password" id="signup-password" class="form-input" placeholder="Minst 8 tecken" required minlength="8" autocomplete="new-password"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Starta gratis provperiod</button>
       </form>
       <div class="auth-link">Har du redan ett konto? <a href="#login" onclick="navigate('login',event)">Logga in</a></div>
     </div></div>
@@ -677,7 +784,7 @@ function renderDashboard() {
       </div>
       <div style="display:flex;gap:0.75rem">
         <button class="btn btn-primary" onclick="navigate('briefs')">📄 Generera briefs</button>
-        <button class="btn btn-outline" onclick="navigate('topics')">+ Nytt ämne</button>
+        <button class="btn btn-outline" onclick="showTopicForm()">+ Nytt ämne</button>
       </div>
     </div>
 
@@ -745,7 +852,7 @@ function renderDashboard() {
             <div class="empty-icon">📄</div>
             <h3>Inga briefs än</h3>
             <p>Generera din första brief för att se en analys.</p>
-            <button class="btn btn-primary" onclick="navigate('briefs')">Generera nu</button>
+            <button class="btn btn-primary" onclick="generateBriefs()">Generera nu</button>
           </div>
         ` : state.briefs.slice(0,4).map(b => `
           <div class="brief-card-sm" onclick="showBrief(${b.id})">
@@ -959,7 +1066,7 @@ function renderBriefs() {
         <h1>Dina briefs</h1>
         <p class="subtitle" style="margin-bottom:0">AI-genererade konkurrentanalyser</p>
       </div>
-      <button class="btn btn-primary" onclick="generateBriefs()" ${state.subscription?.status !== 'active' ? 'disabled title="Prenumeration krävs"' : ''}>📄 Generera nu</button>
+      <button class="btn btn-primary" onclick="generateBriefs()">📄 Generera nu</button>
     </div>
 
     ${state.briefs.length > 0 ? `
@@ -1028,7 +1135,9 @@ function filterBriefs(query) {
 }
 
 async function generateBriefs() {
-  const btn = document.querySelector('#page-briefs .btn-primary');
+  // Hitta knappen oavsett vilken sida vi är på
+  const btn = document.querySelector('#page-briefs .btn-primary, #page-overview .btn-primary') || 
+    document.querySelector('button.btn-primary[onclick*="generateBriefs"]');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Genererar...'; }
 
   try {
@@ -1793,6 +1902,11 @@ function renderFAQ(loggedIn) {
     { q: 'Hur kopplar jag Slack?', a: 'Gå till Profil → Slack-integration. Skapa en webhook i Slack (api.slack.com/apps → Incoming Webhooks) och klistra in URL:en. När du genererar briefs levereras de automatiskt till din Slack-kanal.' },
     { q: 'Vad är skillnaden mot Retriever/Meltwater?', a: 'BriefBot är mycket enklare och billigare. Retriever och Meltwater kostar 3.000–15.000 kr/mån och är designade för stora företag med heltidsanalytiker. BriefBot kostar 99 kr/mån och är byggd för små och medelstora företag som vill ha snabb, automatiserad konkurrentbevakning.' },
     { q: 'Hur hanterar ni min data?', a: 'Vi lagrar endast den information du anger (email, namn, ämnen). Ingen betaldata lagras hos oss — all betalning hanteras av Stripe. Dina briefs genereras med Gemini (Google) och vi sparar dem i vår databas så du kan läsa dem när du vill.' },
+    { q: 'Kan jag avsluta när jag vill?', a: 'Ja, du kan säga upp din prenumeration när som helst. Ingen bindningstid, inga uppsägningsavgifter. Du behåller åtkomst till kontot under resten av faktureringsperioden.' },
+    { q: 'Vad händer efter 14-dagars provperioden?', a: 'Efter 14 dagar övergår du till gratisnivån (1 ämne gratis för alltid) om du inte uppgraderar. Din briefs och dina inställningar sparas — inget försvinner.' },
+    { q: 'Får jag pengarna tillbaka?', a: 'Ja, vi erbjuder 30 dagars ångerrätt på alla betalda planer. Om du inte är nöjd inom 30 dagar från köpdatum får du full återbetalning — inga frågor.' },
+    { q: 'Är min data säker?', a: 'Ja. All trafik är SSL-krypterad (HTTPS). Betalningar hanteras av Stripe — BriefBot lagrar aldrig dina kortuppgifter. Servrarna finns inom EU. BriefBot är GDPR-kompatibel.' },
+    { q: 'Kan jag lägga till teammedlemmar?', a: 'På Team-planen (299 kr/mån) kan du bjuda in upp till 5 teammedlemmar. Varje medlem kan skapa egna ämnen och få egna briefs.' },
   ];
 
   page.innerHTML = `
@@ -1954,10 +2068,12 @@ function esc(s) {
     navigate('dashboard');
     loadDashboardData();
     showToast('Inloggad med Google! 🎉', 'success');
+    window._bb_init_done = true;
   } else {
     render();
     if (state.token) {
       loadDashboardData();
+      window._bb_init_done = true;
     }
   }
 })();
