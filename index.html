@@ -3,179 +3,405 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BriefBot — Automatisk konkurrentbevakning för småföretag | Från 99 kr/mån</title>
-  <meta name="description" content="BriefBot är billig konkurrentbevakning för småföretag. Få dagliga AI-briefs om dina konkurrenter — precis som storföretagen. Från 99 kr/mån. Första ämnet gratis för alltid.">
-  <meta name="keywords" content="konkurrentbevakning, marknadsbevakning, AI-analys, omvärldsbevakning, konkurrentanalys, briefbot, svensk AI, småföretag, billig omvärldsbevakning, automatisk konkurrentanalys">
+  <title>Fastighetsbevakningen — Automatisk myndighetsbevakning för fastighetsägare | Från 149 kr/mån</title>
+  <meta name="description" content="Fastighetsbevakningen håller koll på Boverket, Riksbanken, Energimyndigheten och EU-direktiv — automatiskt. Dagliga sammanfattningar direkt till dig. Från 149 kr/mån.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://briefbot.se/">
-
-  <!-- Open Graph / Social preview -->
-  <meta property="og:title" content="BriefBot — Konkurrentbevakning för småföretag | Från 99 kr/mån">
-  <meta property="og:description" content="Billig automatisk konkurrentbevakning för småföretag. AI-briefs med aktuell webbdata. Från 99 kr/mån. Första ämnet gratis för alltid.">
+  <meta property="og:title" content="Fastighetsbevakningen — Automatisk myndighetsbevakning | Från 149 kr/mån">
+  <meta property="og:description" content="Allt en fastighetsägare måste hålla koll på — automatiskt. Boverket, Riksbanken, Energimyndigheten, EU-direktiv. Dagliga sammanfattningar.">
   <meta property="og:url" content="https://briefbot.se/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sv_SE">
-  <meta property="og:image" content="https://briefbot.se/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BriefBot — Konkurrentbevakning för småföretag | Från 99 kr/mån">
-  <meta name="twitter:description" content="Billig automatisk konkurrentbevakning. AI-briefs med aktuell data. Från 99 kr/mån. Första ämnet gratis.">
-  <meta name="twitter:image" content="https://briefbot.se/og-image.png">
 
-  <!-- Structured data for Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="/briefbot-logo-square.svg">
+  <link rel="stylesheet" href="/app.css?v=8">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "BriefBot",
+    "name": "Fastighetsbevakningen",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "description": "AI-driven konkurrentbevakning för småföretag. Få dagliga briefs om dina konkurrenter automatiskt. Från 99 kr/mån.",
-    "offers": [
-      {
-        "@type": "Offer",
-        "name": "Free",
-        "price": "0",
-        "priceCurrency": "SEK",
-        "description": "1 ämne gratis för alltid"
-      },
-      {
-        "@type": "Offer",
-        "name": "Pro",
-        "price": "99",
-        "priceCurrency": "SEK"
-      }
-    ],
-    "author": {
-      "@type": "Organization",
-      "name": "BriefBot"
+    "description": "Automatisk myndighetsbevakning för fastighetsägare och BRF:er. Dagliga sammanfattningar från Boverket, Riksbanken, Energimyndigheten och EU.",
+    "offers": {
+      "@type": "Offer",
+      "price": "149",
+      "priceCurrency": "SEK"
     }
   }
   </script>
-
-  <!-- FAQ Schema for rich search results -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Vad är BriefBot?",
-        "acceptedAnswer": { "@type": "Answer", "text": "BriefBot är en AI-driven konkurrentbevakningstjänst för småföretag. Du väljer ämnen och BriefBot genererar dagliga briefs med analyser av konkurrenter och marknadsnyheter automatiskt." }
-      },
-      {
-        "@type": "Question",
-        "name": "Vad kostar BriefBot?",
-        "acceptedAnswer": { "@type": "Answer", "text": "BriefBot kostar 99 kr/månad för Pro med 5 ämnen och har en gratis-nivå med 1 ämne för alltid. Meltwater kostar cirka 15 000 kr/månad i jämförelse." }
-      },
-      {
-        "@type": "Question",
-        "name": "Hur fungerar BriefBot?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Du lägger till ämnen och nyckelord. BriefBot använder AI för att dagligen söka efter nyheter och analyser, och skickar en sammanfattad brief med insikter och handlingsrekommendationer." }
-      },
-      {
-        "@type": "Question",
-        "name": "Kan jag prova BriefBot gratis?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Ja, gratis-nivån ger 1 ämne för alltid. Inget kreditkort krävs." }
-      },
-      {
-        "@type": "Question",
-        "name": "Hur skiljer BriefBot sig från Meltwater?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Meltwater kostar från 15 000 kr/månad för storföretag. BriefBot kostar 0-99 kr/månad och är helautomatiserat med AI. Samma typ av insikter till en bråkdel av priset." }
-      },
-      {
-        "@type": "Question",
-        "name": "Är min data säker hos BriefBot?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Ja. All trafik är SSL-krypterad. Betalningar hanteras av Stripe. Servrarna finns inom EU. BriefBot är GDPR-kompatibel." }
-      },
-      {
-        "@type": "Question",
-        "name": "Kan jag avsluta min prenumeration när jag vill?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Ja, du kan säga upp när som helst. Ingen bindningstid, inga avgifter. Du behåller åtkomst under resten av perioden." }
-      },
-      {
-        "@type": "Question",
-        "name": "Vad kostar BriefBot?",
-        "acceptedAnswer": { "@type": "Answer", "text": "BriefBot kostar 99 kr/månad för upp till 5 ämnen. Första ämnet är gratis för alltid. 14 dagars gratis provperiod." }
-      },
-      {
-        "@type": "Question",
-        "name": "Hur fungerar konkurrentbevakningen?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Du lägger till ämnen du vill bevaka. BriefBot söker webben med Google Search och skapar AI-briefs på svenska med analys och handlingsrekommendationer." }
-      }
-    ]
-  }
-  </script>
-
-  <!-- Preload critical resources -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- App styles -->
-  <link rel="stylesheet" href="/app.css?v=6">
-
-  <!-- Favicon -->
-  <link rel="icon" href="/briefbot-logo-square.svg">
-  <link rel="apple-touch-icon" href="/briefbot-logo-square.svg">
 </head>
 <body>
-  <!-- Toast container -->
-  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Cookie consent banner (hidden by default) -->
-  <div id="cookie-consent" class="cookie-banner" role="dialog" aria-label="Cookie-inställningar">
-    <p>BriefBot använder cookies för att fungera och för att förbättra din upplevelse. <a href="#faq" onclick="navigate('faq')">Läs mer</a></p>
-    <div class="cookie-actions">
-      <button class="btn btn-outline btn-sm" onclick="rejectCookies()">Endast nödvändiga</button>
-      <button class="btn btn-primary btn-sm" onclick="acceptCookies()">Godkänn alla</button>
+<!-- Navigation -->
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <img src="/briefbot-logo.svg" alt="Fastighetsbevakningen" class="logo-img">
+      <span class="logo-text">Fastighets<span class="logo-accent">bevakningen</span></span>
+    </a>
+    <nav class="nav-desktop">
+      <a href="#hur" class="nav-link">Så funkar det</a>
+      <a href="#kallor" class="nav-link">Källor</a>
+      <a href="#pris" class="nav-link">Pris</a>
+      <a href="/app.html" class="nav-link">Logga in</a>
+      <a href="/app.html#signup" class="btn btn-primary btn-sm">Starta gratis</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Meny">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Svensk fastighetsbevakning — från 149 kr/mån
+      </div>
+      <h1 class="hero-title">
+        Allt en fastighetsägare<br>måste hålla koll på<br><span class="hero-highlight">— automatiskt.</span>
+      </h1>
+      <p class="hero-sub">
+        Boverket, Riksbanken, Energimyndigheten och EU-direktiv förändras ständigt.
+        Vi bevakar allt åt dig — och sammanfattar det som påverkar just din fastighet.
+      </p>
+      <div class="hero-actions">
+        <a href="/app.html#signup" class="btn btn-primary btn-lg">
+          Starta gratis provperiod
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#hur" class="btn btn-ghost btn-lg">Så funkar det</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Ingen bindningstid
+        </div>
+        <div class="trust-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          14 dagar gratis
+        </div>
+        <div class="trust-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Inget kontokort
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="hero-card-label">Dagens bevakning</span>
+        </div>
+        <div class="hero-card-body">
+          <div class="hero-card-item pulse">
+            <div class="hero-card-icon">🏦</div>
+            <div>
+              <div class="hero-card-title">Riksbanken sänker styrräntan</div>
+              <div class="hero-card-meta">2 timmar sedan</div>
+            </div>
+          </div>
+          <div class="hero-card-item">
+            <div class="hero-card-icon">🏛️</div>
+            <div>
+              <div class="hero-card-title">Nya BBR-krav från årsskiftet</div>
+              <div class="hero-card-meta">5 timmar sedan</div>
+            </div>
+          </div>
+          <div class="hero-card-item">
+            <div class="hero-card-icon">🇪🇺</div>
+            <div>
+              <div class="hero-card-title">EPBD: energiklass E från 2030</div>
+              <div class="hero-card-meta">Igår</div>
+            </div>
+          </div>
+          <div class="hero-card-item">
+            <div class="hero-card-icon">⚖️</div>
+            <div>
+              <div class="hero-card-title">Hyresnämnden — nytt prejudikat</div>
+              <div class="hero-card-meta">Igår</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-card-footer">
+          <div class="hero-card-glow"></div>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- Outlogged app (public pages) -->
-  <div id="app-loggedout" class="page active">
-    <!-- Pages rendered by app.js -->
-    <div id="page-home" class="page"></div>
-    <div id="page-login" class="page"></div>
-    <div id="page-signup" class="page"></div>
-    <div id="page-reset" class="page"></div>
-    <div id="page-faq-out" class="page"></div>
-    <div id="page-blog-out" class="page"></div>
-    <div id="page-pricing-out" class="page"></div>
-  </div>
-
-  <!-- Logged-in app -->
-  <div id="app-dashboard" class="page">
-    <nav id="dash-nav" class="nav"></nav>
-    <div class="dashboard-grid">
-      <aside class="sidebar" id="sidebar">
-        <h3>Meny</h3>
-        <ul class="sidebar-menu">
-          <li><a href="#dashboard" onclick="navigate('dashboard')">📊 Översikt</a></li>
-          <li><a href="#topics" onclick="navigate('topics')">📡 Ämnen</a></li>
-          <li><a href="#briefs" onclick="navigate('briefs')">📄 Briefs</a></li>
-          <li><a href="#pricing" onclick="navigate('pricing')">💳 Pris</a></li>
-          <li><a href="#profile" onclick="navigate('profile')">👤 Profil</a></li>
-          <li><a href="#faq" onclick="navigate('faq')">❓ FAQ</a></li>
-          <li style="margin-top:2rem"><a href="#" onclick="handleLogout()" style="color:var(--danger)">🚪 Logga ut</a></li>
-        </ul>
-      </aside>
-      <main class="main-content" id="main-content">
-        <div id="page-dashboard" class="page"></div>
-        <div id="page-topics" class="page"></div>
-        <div id="page-briefs" class="page"></div>
-        <div id="page-newsletter" class="page"></div>
-        <div id="page-pricing" class="page"></div>
-        <div id="page-profile" class="page"></div>
-        <div id="page-payment" class="page"></div>
-        <div id="page-faq" class="page"></div>
-        <div id="page-reset" class="page"></div>
-      </main>
+<!-- Problem/Value -->
+<section class="value-section" id="varfor">
+  <div class="section-label">VARFÖR FASTIGHETSBEVAKNINGEN</div>
+  <h2 class="section-title">Du har redan fullt upp med<br>det som faktiskt måste göras</h2>
+  <p class="section-sub">Att dessutom hålla koll på myndigheter, regelverk och ränteförändringar — det sköter vi.</p>
+  <div class="value-grid">
+    <div class="value-card">
+      <div class="value-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>Spara 5+ timmar i veckan</h3>
+      <p>Ingen manuell bevakning av Boverket, Riksbanken eller EU-direktiv. Vi sammanställer allt — du får en sammanfattning på 2 minuter.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>Missa aldrig en deadline</h3>
+      <p>När Boverket ändrar BBR-krav eller EU inför nya energidirektiv — får du reda på det direkt. Inte tre månader för sent.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Fatta bättre beslut</h3>
+      <p>Ränteförändringar, nya skatteregler, energikrav — allt som påverkar din kalkyl. Du får underlaget, vi gör analysen.</p>
     </div>
   </div>
+</section>
 
-  <script src="/app.js?v=7"></script>
+<!-- How it works -->
+<section class="steps-section" id="hur">
+  <div class="section-label">SÅ FUNKAR DET</div>
+  <h2 class="section-title">Tre steg — sen sköter det sig självt</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-line"></div>
+      <h3>Skapa konto</h3>
+      <p>Registrera dig på 30 sekunder. Ange din fastighetstyp — BRF, hyresfastighet eller kommersiellt.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-line"></div>
+      <h3>Välj bevakning</h3>
+      <p>Markera vilka områden som är relevanta: ränta, OVK/BBR, energikrav, EU-direktiv eller domar.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Få sammanfattningar</h3>
+      <p>Varje morgon får du en brief med dagens viktigaste förändringar — direkt i mejlen eller Slack.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Sources -->
+<section class="sources-section" id="kallor">
+  <div class="section-label">VÅRA KÄLLOR</div>
+  <h2 class="section-title">Vi bevakar myndigheter och marknad<br>— åt dig</h2>
+  <p class="section-sub">Data direkt från källorna. Ingen gammal AI, inga hallucinationer.</p>
+  <div class="sources-grid">
+    <div class="source-card">
+      <div class="source-icon">🏦</div>
+      <span>Riksbanken</span>
+    </div>
+    <div class="source-card">
+      <div class="source-icon">🏛️</div>
+      <span>Boverket</span>
+    </div>
+    <div class="source-card">
+      <div class="source-icon">⚡</div>
+      <span>Energimyndigheten</span>
+    </div>
+    <div class="source-card">
+      <div class="source-icon">🇪🇺</div>
+      <span>EU-direktiv</span>
+    </div>
+    <div class="source-card">
+      <div class="source-icon">⚖️</div>
+      <span>Sveriges Domstolar</span>
+    </div>
+    <div class="source-card">
+      <div class="source-icon">🏢</div>
+      <span>Fastighetsägarna</span>
+    </div>
+  </div>
+</section>
+
+<!-- Demo Brief -->
+<section class="demo-section" id="exempel">
+  <div class="section-label">EXEMPEL</div>
+  <h2 class="section-title">Så här ser din dagliga brief ut</h2>
+  <p class="section-sub">Koncist, relevant och direkt användbart. Så här kan morgondagens sammanfattning se ut.</p>
+  <div class="demo-card">
+    <div class="demo-header">
+      <div class="demo-header-left">
+        <span class="demo-badge">Fastighetsägare</span>
+        <span class="demo-date">Juni 2026</span>
+      </div>
+      <div class="demo-header-right">
+        <span class="demo-pill">3 ändringar</span>
+      </div>
+    </div>
+    <div class="demo-body">
+      <div class="demo-item">
+        <div class="demo-item-marker demo-marker-red"></div>
+        <div>
+          <h4>Boverket skärper BBR-krav för tillgänglighet</h4>
+          <p>Nya krav gäller från årsskiftet vid ombyggnad. Påverkar fastighetsägare med planerade renoveringar — skärpta regler för hissar, dörrbredder och kontrastmarkering.</p>
+          <span class="demo-tag">OVK & BBR</span>
+        </div>
+      </div>
+      <div class="demo-item">
+        <div class="demo-item-marker demo-marker-amber"></div>
+        <div>
+          <h4>Energimyndigheten: EPBD-krav på energideklarationer</h4>
+          <p>Lägst energiklass E från 2030 för alla byggnader som säljs eller hyrs ut. Nya energideklarationer måste innehålla renoveringsrekommendationer.</p>
+          <span class="demo-tag">Energikrav</span>
+        </div>
+      </div>
+      <div class="demo-item">
+        <div class="demo-item-marker demo-marker-green"></div>
+        <div>
+          <h4>Riksbanken lämnar styrräntan oförändrad</h4>
+          <p>Styrräntan kvar på 2,75%. Nästa besked 3 juli. Marknaden prissätter en sänkning till hösten — kan påverka din refinansiering.</p>
+          <span class="demo-tag">Ränta</span>
+        </div>
+      </div>
+    </div>
+    <div class="demo-footer">
+      <span>Genererad av Fastighetsbevakningen · Data från Riksbanken, Boverket, Energimyndigheten</span>
+      <a href="/app.html#signup" class="btn btn-primary">Få egna briefs →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing-section" id="pris">
+  <div class="section-label">PRIS</div>
+  <h2 class="section-title">Enkelt. Fast pris. Inga dolda avgifter.</h2>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-level">Baspaket</div>
+      <div class="pricing-price">
+        <span class="pricing-amount">149 kr</span>
+        <span class="pricing-period">/månad</span>
+      </div>
+      <p class="pricing-desc">För fastighetsägare som vill ha koll på det viktigaste.</p>
+      <ul class="pricing-features">
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Daglig myndighetsbevakning</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Räntebevakning</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> BBR & OVK-ändringar</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Energikrav & EU-direktiv</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Leverans via mejl</li>
+      </ul>
+      <a href="/app.html#signup" class="btn btn-primary btn-full">Starta gratis</a>
+      <p class="pricing-trial">14 dagar gratis · Ingen bindningstid</p>
+    </div>
+    <div class="pricing-card pricing-featured">
+      <div class="pricing-badge">Populärast</div>
+      <div class="pricing-level">Pro</div>
+      <div class="pricing-price">
+        <span class="pricing-amount">299 kr</span>
+        <span class="pricing-period">/månad</span>
+      </div>
+      <p class="pricing-desc">För BRF:er och förvaltare med flera fastigheter.</p>
+      <ul class="pricing-features">
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Allt i Baspaket</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Flernivåbevakning (upp till 5 fastigheter)</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Domar & prejudikat</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Kostnadspåverkan-analys</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 4L6 11.5 2.5 8" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Slack + mejl</li>
+      </ul>
+      <a href="/app.html#signup" class="btn btn-primary btn-full">Starta gratis</a>
+      <p class="pricing-trial">14 dagar gratis · Ingen bindningstid</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <h2>Redo att slippa hålla koll själv?</h2>
+  <p>Skapa konto på 30 sekunder. 14 dagar gratis. Inget kontokort. Ingen bindningstid.</p>
+  <a href="/app.html#signup" class="btn btn-primary btn-lg">
+    Starta gratis provperiod
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="/briefbot-logo.svg" alt="Fastighetsbevakningen" style="height:28px">
+      <p>Automatisk myndighetsbevakning för fastighetsägare och BRF:er. Data direkt från källorna — inga hallucinationer.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Produkt</h4>
+      <a href="#pris">Pris</a>
+      <a href="/app.html#faq">FAQ</a>
+      <a href="/app.html#blog">Blogg</a>
+    </div>
+    <div class="footer-col">
+      <h4>Företag</h4>
+      <a href="/">Hem</a>
+      <a href="/app.html">Logga in</a>
+      <a href="/app.html#signup">Skapa konto</a>
+    </div>
+    <div class="footer-col">
+      <h4>Säkert & tryggt</h4>
+      <div class="footer-trust">
+        <span>🔒 SSL-krypterat</span>
+        <span>💳 Stripe-betalningar</span>
+        <span>🇪🇺 Data inom EU</span>
+        <span>📋 GDPR-kompatibelt</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Fastighetsbevakningen. En del av BriefBot.</span>
+    <a href="mailto:hej@briefbot.se">hej@briefbot.se</a>
+  </div>
+</footer>
+
+<script>
+// Mobile nav toggle
+document.getElementById('navToggle').addEventListener('click', function() {
+  document.querySelector('.nav-desktop').classList.toggle('nav-open');
+  this.classList.toggle('active');
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Close mobile nav if open
+      document.querySelector('.nav-desktop').classList.remove('nav-open');
+      document.getElementById('navToggle').classList.remove('active');
+    }
+  });
+});
+
+// Intersection Observer for scroll animations
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.value-card, .step-card, .source-card, .demo-card, .pricing-card').forEach(el => {
+  el.classList.add('scroll-reveal');
+  observer.observe(el);
+});
+</script>
+
 </body>
 </html>

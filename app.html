@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fastighetsbevakningen — App</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app-spa.css?v=8">
+  <link rel="icon" href="/briefbot-logo-square.svg">
+</head>
+<body>
+  <!-- Toast container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Logged-out app (public pages) -->
+  <div id="app-loggedout" class="page active">
+    <div id="page-home" class="page"></div>
+    <div id="page-login" class="page"></div>
+    <div id="page-signup" class="page"></div>
+    <div id="page-reset" class="page"></div>
+    <div id="page-faq-out" class="page"></div>
+    <div id="page-blog-out" class="page"></div>
+    <div id="page-pricing-out" class="page"></div>
+  </div>
+
+  <!-- Logged-in app -->
+  <div id="app-dashboard" class="page">
+    <nav id="dash-nav" class="nav"></nav>
+    <div class="dashboard-grid">
+      <aside class="sidebar" id="sidebar">
+        <h3>Meny</h3>
+        <ul class="sidebar-menu">
+          <li><a href="#dashboard" onclick="navigate('dashboard')">📊 Översikt</a></li>
+          <li><a href="#topics" onclick="navigate('topics')">📡 Ämnen</a></li>
+          <li><a href="#briefs" onclick="navigate('briefs')">📄 Briefs</a></li>
+          <li><a href="#pricing" onclick="navigate('pricing')">💳 Pris</a></li>
+          <li><a href="#profile" onclick="navigate('profile')">👤 Profil</a></li>
+          <li><a href="#faq" onclick="navigate('faq')">❓ FAQ</a></li>
+          <li style="margin-top:2rem"><a href="#" onclick="handleLogout()" style="color:var(--danger)">🚪 Logga ut</a></li>
+        </ul>
+      </aside>
+      <main class="main-content" id="main-content">
+        <div id="page-dashboard" class="page"></div>
+        <div id="page-topics" class="page"></div>
+        <div id="page-briefs" class="page"></div>
+        <div id="page-newsletter" class="page"></div>
+        <div id="page-pricing" class="page"></div>
+        <div id="page-profile" class="page"></div>
+        <div id="page-payment" class="page"></div>
+        <div id="page-faq" class="page"></div>
+        <div id="page-reset" class="page"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/app.js?v=7"></script>
+</body>
+</html>
